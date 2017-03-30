@@ -220,8 +220,10 @@ class LED(urwid.AttrMap):
         self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change)
         if self.enum_value:
             self.pv.add_callback(callback=self.change_value_enum)
+            self.change_value_enum(self.pv.char_value)
         else:
             self.pv.add_callback(callback=self.change_value)
+            self.change_value(self.pv.value)
 
     def change_value_enum(self, char_value, **kw):
         if char_value in self.on_values:
@@ -239,7 +241,7 @@ class LED(urwid.AttrMap):
         if conn == 'False':
             super().set_attr_map({None: 'disconnected'})
 
-class button(urwid.Button):
+class button(urwid.AttrMap):
     """ Control Button """
 
     count = 0
@@ -251,17 +253,12 @@ class button(urwid.Button):
         self.pv_name = pv_name
         self.click_value = click_value
         self.count += 1
-        self.__super.__init__(text)
-        urwid.connect_signal(self, 'click', self.on_click)
+        self.__super.__init__(urwid.Button(text), 'None', focus_map='button')
+        urwid.connect_signal(self.original_widget, 'click', self.clicked)  
         self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
 
-    def on_click(self, **kw):
-        self.pv.label = self.click_value
-
- # for i in range(0, 3):
-        #    button = urwid.Button(str(i))
-        #    urwid.connect_signal(button, 'click', print(i), str(i))
-        #    self.testPV.append(urwid.AttrMap(button, None, focus_map='reversed'))
+    def clicked(self, *args):
+        self.pv.put(self.click_value)
 
 
 
@@ -285,7 +282,8 @@ class terminal_client:
         ('green_LED_off', 'black', 'dark gray'),
         ('green_LED_on', 'black', 'light green'),
         ('red_LED_off', 'black', 'dark gray'),
-        ('red_LED_on', 'black', 'light red')
+        ('red_LED_on', 'black', 'light red'),
+        ('button', 'light gray', 'dark blue')
         ]
 
     footer_text = [
@@ -325,9 +323,9 @@ class terminal_client:
         self.columns3 = urwid.Columns([('fixed', 9, analog_output('SR-PS-BM:getIload', 3, unit='A')),
                         ('fixed', 9, analog_output('powerHost:ai1', 3, unit='A')),
                         ('fixed', 2, LED('SR-PS-BM:getStateSequencer', [b'Auto', b'Auto Active'], 'green', enum_value=True)),
-                        ('fixed', 2, LED('SR-PS-BM:getStateSequencer', [5, 6], 'red')),
-                        ('fixed', 2, button(u'Button1', 'SR-PS-BM:getStateSequencer', 5)),
-                        ('fixed', 9, analog_output('powerHost:calc3', 3, unit='A'))], 1, min_width=5)
+                        ('fixed', 2, LED('powerHost:subExample', [5], 'red')),
+                        ('fixed', 10, button(u'Button', 'powerHost:subExample', 5)),
+                        ('fixed', 9, analog_output('powerHost:calc3', 3, unit='A'))], 0, min_width=5)
 
         self.walker = urwid.ListBox(urwid.SimpleFocusListWalker([self.columns1, self.columns2, self.columns3]))
         self.header = urwid.Text(u"Terminal Based EPICS Client")
