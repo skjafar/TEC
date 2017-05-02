@@ -2,6 +2,7 @@
 
 
 import epics
+import argparse
 import shutil
 import os
 import sys
@@ -10,7 +11,18 @@ from threading import Thread
 from time import sleep
 import urwid
 from urwid import (CURSOR_LEFT, CURSOR_RIGHT, CURSOR_UP, CURSOR_DOWN, REDRAW_SCREEN)
+import yaml
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--config', help='YAML file with page configuration')
+
+
+
+
+
+divider = urwid.Divider
+text = urwid.Text
 
 class float_edit(urwid.Edit):
     """Container widget for writing to float output PVs"""
@@ -28,7 +40,10 @@ class float_edit(urwid.Edit):
         """
         self.pv_name = pv_name
         self.count += 1
-        self.unit = unit
+        if unit != None:
+            self.unit = unit
+        else:
+            self.unit = ''
         self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
         if display_precision < 0:
             self.display_precision = self.pv.precision
@@ -129,7 +144,10 @@ class analog_input(urwid.AttrMap):
     def __init__(self, pv_name, enum=False, display_precision=-1, unit=None):
         self.pv_name = pv_name
         self.count += 1
-        self.unit = unit
+        if unit != None:
+            self.unit = unit
+        else:
+            self.unit = ''
         self.enum = enum
         self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change)
         if display_precision < 0:
@@ -226,7 +244,7 @@ class LED(urwid.AttrMap):
             self.change_value(self.pv.value)
 
     def change_value_enum(self, char_value, **kw):
-        if char_value in self.on_values:
+        if char_value.decode('utf8') in self.on_values:
             super().set_attr_map({None: '{}_LED_on'.format(self.color)})
         else:
             super().set_attr_map({None: '{}_LED_off'.format(self.color)})
@@ -261,8 +279,32 @@ class button(urwid.AttrMap):
         self.pv.put(self.click_value)
 
 
+def str2Class(str):
+    return getattr(sys.modules[__name__], str)
 
 
+def parseConfig(file):
+    
+    inputFile = open(file, 'r')
+    pageConfig = yaml.load(inputFile)
+    inputFile.close()
+
+    rows_list = []
+    for row, rowContent in pageConfig.items():
+        columns_list = []
+        for field in rowContent:
+            fieldType = field['type']
+            fieldWidth = field['width']
+            field.pop('type')
+            field.pop('width')
+            columns_list.append(('fixed', fieldWidth, str2Class(fieldType)(**field)))
+        rows_list.append(urwid.Columns(columns_list))
+
+    #columns_list = []
+    #for PV in testPVfromConfig:
+    #    columns_list.append(('fixed', 10, PV))
+
+    return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
 
 
 
@@ -283,11 +325,13 @@ class terminal_client:
         ('green_LED_on', 'black', 'light green'),
         ('red_LED_off', 'black', 'dark gray'),
         ('red_LED_on', 'black', 'light red'),
+        ('yellow_LED_off', 'black', 'dark gray'),
+        ('yellow_LED_on', 'black', 'yellow'),
         ('button', 'light gray', 'dark blue')
         ]
 
     footer_text = [
-        ('title', "Test Console Epics"), "    ",
+        ('title', "Testing Grounds"), "    ",
         ('key', "UP"), ",", ('key', "DOWN"), ",",
         ('key', "RIGHT"), ",", ('key', "LEFT"),
         "  ",
@@ -303,32 +347,40 @@ class terminal_client:
 
     update_rate = 0.1
 
-    def __init__(self):
-        self.testPV = []
-        self.testPV.append(analog_input('powerHost:ai1', False, 3, unit='A'))
-        self.testPV.append(analog_input('powerHost:subExample', False, 3, unit='A'))
-        self.testPV.append(analog_input('SRC01-PS-QD1:getStateSequencer', True, 3, unit='A'))
-        self.testPV.append(analog_input('SR-PS-SF1:getIload', False, 3, unit='A'))
-        self.testPV.append(analog_input('SR-PS-SD1:getIload', False, 3, unit='A'))
+    def __init__(self, configFileName):
+                
+        #self.testPV = []
+        #self.testPV.append(analog_input('powerHost:ai1', False, 3, unit='A'))
+        #self.testPV.append(analog_input('powerHost:subExample', False, 3, unit='A'))
+        #self.testPV.append(analog_input('SRC01-PS-QD1:getStateSequencer', True, 3, unit='A'))
+        #self.testPV.append(analog_input('SR-PS-SF1:getIload', False, 3, unit='A'))
+        #self.testPV.append(analog_input('SR-PS-SD1:getIload', False, 3, unit='A'))
 
-        self.columns_list = []
-        for PV in self.testPV:
-            self.columns_list.append(('fixed', 10, PV))
+        
+        #self.columns_list = parseConfig('test.yaml')
+        #self.columns_list = []
+        #for PV in self.testPVfromConfig:
+        #    self.columns_list.append(('fixed', 10, PV))
 
-       
+        #print(yaml.dump(self.textPV))
+        #print()
+        #print(self.textPV)
+        #sleep(5)
 
-        self.columns1 = urwid.Columns(self.columns_list, 1, min_width=5)
-        self.columns2 = urwid.Columns([('fixed', 9, analog_output('powerHost:ai1', 3, unit='A')),
-                        ('fixed', 9, analog_output('powerHost:subExample', 3, unit='A'))], 1, min_width=5)
-        self.columns3 = urwid.Columns([('fixed', 9, analog_output('SR-PS-BM:getIload', 3, unit='A')),
-                        ('fixed', 9, analog_output('powerHost:ai1', 3, unit='A')),
-                        ('fixed', 2, LED('SR-PS-BM:getStateSequencer', [b'Auto', b'Auto Active'], 'green', enum_value=True)),
-                        ('fixed', 2, LED('powerHost:subExample', [5], 'red')),
-                        ('fixed', 10, button(u'Button', 'powerHost:subExample', 5)),
-                        ('fixed', 9, analog_output('powerHost:calc3', 3, unit='A'))], 0, min_width=5)
+        #self.columns1 = urwid.Columns(self.columns_list, 1, min_width=5)
+        #self.columns1 = parseConfig('test.yaml')
+        #self.columns2 = urwid.Columns([('fixed', 9, analog_output('powerHost:ai1', 3, unit='A')),
+        #                ('fixed', 9, analog_output('powerHost:subExample', 3, unit='A'))], 1, min_width=5)
+        #self.columns3 = urwid.Columns([('fixed', 9, analog_output('SR-PS-BM:getIload', 3, unit='A')),
+        #                ('fixed', 9, analog_output('powerHost:ai1', 3, unit='A')),
+        #                ('fixed', 2, LED('SR-PS-BM:getStateSequencer', ['Auto', 'Auto Active'], 'green', enum_value=True)),
+        #                ('fixed', 2, LED('powerHost:subExample', [5], 'red')),
+        #                ('fixed', 10, button(u'Button', 'powerHost:subExample', 5)),
+        #                ('fixed', 9, analog_output('powerHost:calc3', 3, unit='A'))], 0, min_width=5)
 
-        self.walker = urwid.ListBox(urwid.SimpleFocusListWalker([self.columns1, self.columns2, self.columns3]))
-        self.header = urwid.Text(u"Terminal Based EPICS Client")
+        #self.walker = urwid.ListBox(urwid.SimpleFocusListWalker([self.columns1, self.columns2, self.columns3]))
+        self.walker = parseConfig(configFileName)
+        self.header = urwid.Text(u"Terminal EPICS Client")
         self.footer = urwid.AttrMap(urwid.Text(self.footer_text), 'foot')
         self.view = urwid.Frame(
             urwid.AttrMap(self.walker, 'body'),
@@ -336,6 +388,8 @@ class terminal_client:
             footer=self.footer)
         self.EventLoop = urwid.SelectEventLoop()
         self.EventLoop.alarm(self.update_rate, self.update_screen)
+
+
 
     def main(self):
         """Run the program."""
@@ -353,8 +407,13 @@ class terminal_client:
 
 
 def main():
-    terminal_client().main()
+    terminal_client('test.yaml').main()
 
 
 if __name__ == '__main__':
-    main()
+    args = parser.parse_args()
+    
+    if args.config:
+        terminal_client(args.config).main()
+    else:
+        terminal_client('test.yaml').main()
