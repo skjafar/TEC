@@ -1,0 +1,116 @@
+# This is a YAML configuration file for the General view for the storage ring power supplies
+
+#Field Names
+-
+  -
+    type: 'text'
+    width: 13
+    markup: "PS Name"
+    wrap: 'clip'
+  -
+    type: 'divider'
+    width: 2
+  -
+    type: 'text'
+    width: 7
+    markup: "State"
+    wrap: 'clip'
+  -
+    type: 'divider'
+    width: 2
+  -
+    type: 'text'
+    width: 8
+    markup: "Voltage"
+    wrap: 'clip'
+  -
+    type: 'divider'
+    width: 1
+  -
+    type: 'text'
+    width: 8
+    markup: "Current"
+    wrap: 'clip'
+  -
+    type: 'divider'
+    width: 1
+-
+  -
+    type: 'divider'
+    width: 100
+# Dipole
+-
+  -
+    type: 'text'
+    width: 13
+    markup: "Dipole"
+    wrap: 'clip'
+-
+  -
+    type: 'text'
+    width: 13
+    markup: "SR-PS-BM"
+    wrap: 'clip'
+  -
+    type: 'divider'
+    width: 1
+  -
+    type: 'LED'
+    pv_name: 'SR-PS-BM:getStateHandler'
+    width: 2
+    red_values: 
+      - 'Fault'
+    yellow_values:
+      - 'Standby'
+    green_values:
+      - 'On'
+    enum: True
+  -
+    type: 'analog_input'
+    device_name: 'SR-PS-BM'
+    pv_name: 'getStateHandler'
+    width: 7
+    enum: True
+    display_precision: 3
+  -
+    type: 'divider'
+    width: 1
+  -
+    type: 'analog_input'
+    pv_name: 'SR-PS-BM:getVmon'
+    width: 8
+    enum: False
+    display_precision: 3
+    unit: 'V'
+  -
+    type: 'divider'
+    width: 1
+  -
+    type: 'analog_input'
+    pv_name: 'SR-PS-BM:getIload'
+    width: 8
+    enum: False
+    display_precision: 3
+    unit: 'A'
+  -
+    type: 'divider'
+    width: 1
+  - 
+    type: 'button'
+    text: 'Details'
+    pv_name: 'powerHost:subExample'
+    run_script: "python3 epicstest.py -c test.yaml"
+    width: 11
+
+-
+  -
+    type: 'divider'
+    width: 1
+
+# Quads
+-
+  -
+    type: 'text'
+    width: 13
+    markup: "Quadrupoles"
+    wrap: 'clip'

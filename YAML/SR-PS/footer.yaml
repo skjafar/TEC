@@ -1,0 +1,4 @@
+# This is a YAML configuration file is used as a footer for files
+
+- - type: 'divider'
+    width: 2

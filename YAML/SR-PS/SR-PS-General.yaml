@@ -1,0 +1,1702 @@
+- - {markup: PS Name, type: text, width: 13, wrap: clip}
+  - {type: divider, width: 2}
+  - {markup: State, type: text, width: 7, wrap: clip}
+  - {type: divider, width: 2}
+  - {markup: Voltage, type: text, width: 8, wrap: clip}
+  - {type: divider, width: 1}
+  - {markup: Current, type: text, width: 8, wrap: clip}
+  - {type: divider, width: 1}
+- - {type: divider, width: 100}
+- - {markup: Dipole, type: text, width: 13, wrap: clip}
+- - {markup: SR-PS-BM, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - enum: true
+    green_values: ['On']
+    pv_name: SR-PS-BM:getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SR-PS-BM, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {display_precision: 3, enum: false, pv_name: 'SR-PS-BM:getVmon', type: analog_input,
+    unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {display_precision: 3, enum: false, pv_name: 'SR-PS-BM:getIload', type: analog_input,
+    unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {pv_name: 'powerHost:subExample', run_script: python3 epicstest.py -c test.yaml,
+    text: Details, type: button, width: 11}
+- - {type: divider, width: 1}
+- - {markup: Quadrupoles, type: text, width: 13, wrap: clip}
+- - {markup: SRC01-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC01-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC01-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC01-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC01-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC01-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC01-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC01-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC01-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC01-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC01-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC01-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC01-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC02-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC02-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC02-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC02-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC02-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC02-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC02-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC02-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC02-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC02-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC02-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC02-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC02-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC03-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC03-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC03-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC03-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC03-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC03-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC03-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC03-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC03-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC03-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC03-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC03-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC03-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC04-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC04-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC04-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC04-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC04-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC04-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC04-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC04-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC04-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC04-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC04-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC04-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC04-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC05-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC05-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC05-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC05-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC05-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC05-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC05-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC05-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC05-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC05-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC05-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC05-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC05-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC06-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC06-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC06-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC06-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC06-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC06-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC06-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC06-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC06-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC06-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC06-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC06-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC06-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC07-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC07-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC07-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC07-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC07-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC07-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC07-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC07-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC07-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC07-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC07-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC07-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC07-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC08-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC08-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC08-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC08-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC08-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC08-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC08-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC08-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC08-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC08-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC08-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC08-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC08-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC09-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC09-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC09-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC09-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC09-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC09-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC09-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC09-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC09-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC09-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC09-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC09-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC09-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC10-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC10-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC10-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC10-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC10-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC10-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC10-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC10-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC10-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC10-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC10-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC10-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC10-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC11-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC11-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC11-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC11-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC11-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC11-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC11-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC11-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC11-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC11-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC11-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC11-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC11-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC12-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC12-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC12-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC12-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC12-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC12-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC12-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC12-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC12-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC12-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC12-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC12-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC12-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC13-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC13-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC13-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC13-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC13-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC13-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC13-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC13-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC13-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC13-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC13-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC13-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC13-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC14-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC14-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC14-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC14-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC14-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC14-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC14-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC14-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC14-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC14-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC14-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC14-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC14-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC15-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC15-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC15-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC15-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC15-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC15-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC15-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC15-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC15-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC15-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC15-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC15-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC15-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC16-PS-QF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC16-PS-QF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC16-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC16-PS-QD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC16-PS-QD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC16-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SRC16-PS-QF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC16-PS-QF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC16-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SRC16-PS-QD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SRC16-PS-QD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SRC16-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {type: divider, width: 2}
+- - {markup: Sextupoles, type: text, width: 13, wrap: clip}
+- - {markup: SR-PS-SF1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SR-PS-SF1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SR-PS-SF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SR-PS-SD1, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SR-PS-SD1
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SR-PS-SD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD1, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD1, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD1, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD1, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {markup: SR-PS-SF2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SR-PS-SF2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SR-PS-SF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SF2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+  - {type: divider, width: 2}
+  - {markup: SR-PS-SD2, type: text, width: 12, wrap: clip}
+  - {type: divider, width: 1}
+  - device_name: SR-PS-SD2
+    enum: true
+    green_values: ['On']
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: SR-PS-SD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 7}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD2, display_precision: 3, enum: false, pv_name: getVmon,
+    type: analog_input, unit: V, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD2, display_precision: 3, enum: false, pv_name: getIload,
+    type: analog_input, unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD2, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-SD2, pv_name: subExample, run_script: python3 epicstest.py
+      -c test.yaml, text: Details, type: button, width: 11}
+- - {type: divider, width: 2}
+
