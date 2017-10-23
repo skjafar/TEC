@@ -30,6 +30,12 @@
     text: Details, type: button, width: 11}
 - - {type: divider, width: 1}
 - - {markup: Quadrupoles, type: text, width: 13, wrap: clip}
+  - {type: divider, width: 28}
+  - {device_name: SR-PS-SEQ, display_precision: 3, pv_name: setQFCurrent, type: analog_output,
+    width: 8}
+  - {type: divider, width: 55}
+  - {device_name: SR-PS-SEQ, display_precision: 3, pv_name: setQDCurrent, type: analog_output,
+    width: 8}
 - - {markup: SRC01-PS-QF1, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
   - device_name: SRC01-PS-QF1
@@ -1600,6 +1606,12 @@
       -c test.yaml, text: Details, type: button, width: 11}
 - - {type: divider, width: 2}
 - - {markup: Sextupoles, type: text, width: 13, wrap: clip}
+  - {type: divider, width: 28}
+  - {device_name: SR-PS-SEQ, display_precision: 3, pv_name: setSFCurrent, type: analog_output,
+    width: 8}
+  - {type: divider, width: 55}
+  - {device_name: SR-PS-SEQ, display_precision: 3, pv_name: setSDCurrent, type: analog_output,
+    width: 8}
 - - {markup: SR-PS-SF1, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
   - device_name: SR-PS-SF1
