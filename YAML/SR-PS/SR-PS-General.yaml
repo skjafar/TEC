@@ -6,7 +6,18 @@
   - {type: divider, width: 1}
   - {markup: Current, type: text, width: 8, wrap: clip}
   - {type: divider, width: 1}
-- - {type: divider, width: 100}
+- - {type: divider, width: 50}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: ./GeneralSet.sh setWaveform3Top 30 &> /dev/null,
+    text: '30', type: button, width: 11}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: ./GeneralSet.sh setWaveform3Top 25 &> /dev/null,
+    text: '25', type: button, width: 11}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: ./GeneralSet.sh setWaveform3Top 20 &> /dev/null,
+    text: '20', type: button, width: 11}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: ./GeneralSet.sh setWaveform3Top 15 &> /dev/null,
+    text: '15', type: button, width: 11}
 - - {markup: Dipole, type: text, width: 13, wrap: clip}
 - - {markup: SR-PS-BM, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
@@ -25,6 +36,9 @@
   - {type: divider, width: 1}
   - {display_precision: 3, enum: false, pv_name: 'SR-PS-BM:getIload', type: analog_input,
     unit: A, width: 8}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS-BM, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
   - {type: divider, width: 1}
   - {pv_name: 'powerHost:subExample', run_script: python3 epicstest.py -c test.yaml,
     text: Details, type: button, width: 11}
