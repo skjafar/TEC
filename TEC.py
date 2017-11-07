@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 
 
 import epics
@@ -18,12 +18,18 @@ screen = None
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--config', help='YAML file with page configuration')
-parser.add_argument('-m', '--macro', help='replace every "@M" with this given value')
+parser.add_argument('-m', '--macro', help='replace every "%M" with this given value')
 
 divider = urwid.Divider
 text = urwid.Text
 fill = urwid.SolidFill
-
+try:
+    TEC_path = os.environ['TEC_PATH']
+    bin_path = TEC_path + '/bin/'
+    yaml_path = TEC_path + '/YAML/'
+except KeyError:
+    print('(TEC_PATH) environement variable not defined, please define it in your .bashrc file or similar')
+    os._exit(1)
 
 class float_edit(urwid.Edit):
     """Container widget for writing to float output PVs"""
@@ -274,7 +280,7 @@ class button(urwid.AttrMap):
 
     count = 0
 
-    def __init__(self, text, pv_name=None, click_value=1, enum=False, run_script=None):
+    def __init__(self, text, pv_name=None, click_value=1, enum=False, run_script=None, align='left'):
         """
         
         """
@@ -284,7 +290,8 @@ class button(urwid.AttrMap):
         self.count += 1
         if pv_name is not None:
             self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
-        self.__super.__init__(urwid.Button(text), 'None', focus_map='button')
+        self.__super.__init__(urwid.Button(text), 'None',focus_map='button')
+        self.original_widget._label.align = align
         urwid.connect_signal(self.original_widget, 'click', self.clicked)
 
     def clicked(self, *args):
@@ -292,7 +299,7 @@ class button(urwid.AttrMap):
             self.pv.put(self.click_value)
         else:
             screen.loop.screen.clear()
-            subprocess.call(self.run_script, shell=True)
+            subprocess.call(bin_path + self.run_script, shell=True)
             screen.loop.screen.clear()
 
 
@@ -300,15 +307,27 @@ def str2Class(str):
     return getattr(sys.modules[__name__], str)
 
 
-def parseConfig(file):
+def parseConfig(file, macro):
 
     inputFile = open(file, 'r')
-    pageConfig = yaml.load(inputFile)
+    readFile = inputFile.read()
     inputFile.close()
 
+    if macro:
+        if '%M' in readFile:
+            readFile = readFile.replace('%M', macro)
+            
+        else:
+            input('The YAML file does not contain any Macro designator [%M]. Press any key to evaluate the file normally')
+      
+
+
+    pageConfig = yaml.load(readFile)
+    inputFile.close()
     rows_list = []
     for row in pageConfig:
         columns_list = []
+        i = 0
         for field in row:
             if "device_name" in field:
                 field['pv_name'] = field['device_name'] + ':' + field['pv_name']
@@ -317,7 +336,9 @@ def parseConfig(file):
             fieldWidth = field['width']
             field.pop('type')
             field.pop('width')
+            print(field)
             columns_list.append(('fixed', fieldWidth, str2Class(fieldType)(**field)))
+            i = i+1
         rows_list.append(urwid.Columns(columns_list))
 
     return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
@@ -361,7 +382,7 @@ class terminal_client:
 
     def __init__(self, configFileName, macro=None):
 
-        self.walker = parseConfig(configFileName)
+        self.walker = parseConfig(configFileName, macro)
         self.header = urwid.Text(u"Terminal EPICS Client")
         self.footer = urwid.AttrMap(urwid.Text(self.footer_text), 'foot')
         self.view = urwid.Frame(
@@ -394,7 +415,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.config:
-        screen = terminal_client(args.config, args.macro)
+        if os.path.isfile(yaml_path + args.config):
+            screen = terminal_client(yaml_path + args.config, args.macro)
+        else:
+            screen = terminal_client(args.config, args.macro)
         screen.main()
     else:
         screen = terminal_client('test.yaml')

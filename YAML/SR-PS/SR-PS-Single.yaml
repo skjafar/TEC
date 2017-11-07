@@ -1,0 +1,36 @@
+- - {markup: %M Control Panel, type: text, width: 23, wrap: clip}
+- - {device_name: %M, pv_name: setCommand, click_value: 'Openloop',
+    text: 'Open Loop', type: button, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'Off',
+    text: 'Off', type: button,align: center, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'Standby',
+    text: 'Standby', type: button, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'On',
+    text: 'On', type: button, width: 13}
+- - {type: divider, width: 1}
+- - {markup: State, type: text, width: 8, wrap: clip}
+  - enum: true
+    green_values: ['On']
+    device_name: %M
+    pv_name: getStateHandler
+    red_values: [Fault]
+    type: LED
+    width: 2
+    yellow_values: [Standby]
+  - {device_name: %M, display_precision: 3, enum: true, pv_name: getStateHandler,
+    type: analog_input, width: 8}
+  - {type: divider, width: 2}
+  - {device_name: %M, display_precision: 3, enum: true, pv_name: getStateSequencer,
+    type: analog_input, width: 8}
+- - {markup: Iload, type: text, width: 10, wrap: clip}
+  - {display_precision: 3, enum: false, device_name: %M, pv_name: getIload, type: analog_input,
+    unit: A, width: 8}
+  - {type: divider, width: 2}
+  - {device_name: %M, display_precision: 3, pv_name: setReference, type: analog_output,
+    width: 8}
+- - {markup: Vmon, type: text, width: 10, wrap: clip}
+  - {display_precision: 3, enum: false, device_name: %M, pv_name: getVmon, type: analog_input,
+    unit: V, width: 8}
