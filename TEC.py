@@ -19,6 +19,7 @@ screen = None
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--config', help='YAML file with page configuration')
 parser.add_argument('-m', '--macro', help='replace every "%M" with this given value')
+parser.add_argument('-v','--verbose', help="increase output verbosity", action="store_true")
 
 divider = urwid.Divider
 text = urwid.Text
@@ -31,6 +32,23 @@ except KeyError:
     print('(TEC_PATH) environement variable not defined, please define it in your .bashrc file or similar')
     os._exit(1)
 
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+class FieldParseError(Error):
+    """Exception raised for errors in parsing a field in the YAML configuration file.
+
+    Attributes:
+        field -- input expression in which the error occurred
+        message -- explanation of the error
+    """
+
+    def __init__(self, field, message):
+        self.field = field
+        self.message = '{} in field\n{}'.format(message, field)
+
+
 class float_edit(urwid.Edit):
     """Container widget for writing to float output PVs"""
     count = 0
@@ -41,7 +59,7 @@ class float_edit(urwid.Edit):
         """
         return len(ch) == 1 and ch in "0123456789.-"
 
-    def __init__(self, pv_name, display_precision=-1):
+    def __init__(self, pv_name, align_t='left', display_precision=-1):
         """
         
         """
@@ -54,7 +72,7 @@ class float_edit(urwid.Edit):
             self.display_precision = display_precision
         self.pv.get()
         val = "{:.{}f}".format(self.pv.get(), self.display_precision)
-        self.__super.__init__(edit_text=val, wrap='clip')
+        self.__super.__init__(edit_text=val, wrap='clip', align=align_t)
 
     def keypress(self, size, key):
         """
@@ -144,7 +162,7 @@ class analog_input(urwid.AttrMap):
     """Container widget for reading analog input PVs"""
     count = 0
 
-    def __init__(self, pv_name, enum=False, display_precision=-1, unit=None):
+    def __init__(self, pv_name, enum=False, display_precision=-1, unit=None, align_text='left'):
         self.pv_name = pv_name
         self.count += 1
         if unit is not None:
@@ -158,7 +176,7 @@ class analog_input(urwid.AttrMap):
         else:
             self.display_precision = display_precision
         if self.enum:
-            super().__init__(urwid.Text(((self.pv.char_value)), wrap='clip'), 'analog_input')
+            super().__init__(urwid.Text(self.pv.char_value, align=align_text, wrap='clip'), 'analog_input')
         else:
             super().__init__(urwid.Text((u'{:.{}f}{}'.format(self.pv.value, self.display_precision, self.unit)), wrap='clip'), 'analog_input')
         self.pv.add_callback(callback=self.change_value)
@@ -178,7 +196,7 @@ class analog_output(urwid.AttrMap):
     """container widget to pass color when editing values"""
     count = 0
 
-    def __init__(self, pv_name, display_precision=-1):
+    def __init__(self, pv_name, display_precision=-1, align_text='left'):
         """
         
         """
@@ -186,7 +204,7 @@ class analog_output(urwid.AttrMap):
         self.count += 1
         self.display_precision = display_precision
         self.editing = False
-        self.__super.__init__(float_edit(self.pv_name, self.display_precision), 'analog_output', focus_map='analog_output_focus')
+        self.__super.__init__(float_edit(self.pv_name, align_t=align_text, display_precision=self.display_precision), 'analog_output', focus_map='analog_output_focus')
         self.original_widget.pv.connection_callbacks.append(self.on_connection_change)
         self.original_widget.pv.add_callback(callback=self.change_value)
 
@@ -280,7 +298,7 @@ class button(urwid.AttrMap):
 
     count = 0
 
-    def __init__(self, text, pv_name=None, click_value=1, enum=False, run_script=None, align='left'):
+    def __init__(self, text, pv_name=None, click_value=1, enum=False, run_script=None, align_text='left'):
         """
         
         """
@@ -291,7 +309,7 @@ class button(urwid.AttrMap):
         if pv_name is not None:
             self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
         self.__super.__init__(urwid.Button(text), 'None',focus_map='button')
-        self.original_widget._label.align = align
+        self.original_widget._label.align = align_text
         urwid.connect_signal(self.original_widget, 'click', self.clicked)
 
     def clicked(self, *args):
@@ -307,7 +325,7 @@ def str2Class(str):
     return getattr(sys.modules[__name__], str)
 
 
-def parseConfig(file, macro):
+def parseConfig(file, macro, verbose=False):
 
     inputFile = open(file, 'r')
     readFile = inputFile.read()
@@ -325,20 +343,28 @@ def parseConfig(file, macro):
     pageConfig = yaml.load(readFile)
     inputFile.close()
     rows_list = []
+    row_number=0
     for row in pageConfig:
+        row_number += 1
+        if verbose:
+            print('\n\nThis is a new row [{}] in the GUI'.format(row_number))
         columns_list = []
-        i = 0
+        field_number = 0
         for field in row:
+            field_number += 1
+            if verbose:
+                print('\nThis is a new field [{}]in row {}'.format(field_number, row_number))
+                print(field)
             if "device_name" in field:
                 field['pv_name'] = field['device_name'] + ':' + field['pv_name']
                 field.pop('device_name')
             fieldType = field['type']
             fieldWidth = field['width']
+            if fieldType not in ['text', 'LED', 'analog_input', 'analog_output', 'button', 'divider']:
+                raise FieldParseError(field, 'undefined widget type ({})'.format(fieldType))
             field.pop('type')
             field.pop('width')
-            print(field)
             columns_list.append(('fixed', fieldWidth, str2Class(fieldType)(**field)))
-            i = i+1
         rows_list.append(urwid.Columns(columns_list))
 
     return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
@@ -380,9 +406,9 @@ class terminal_client:
 
     update_rate = 0.1
 
-    def __init__(self, configFileName, macro=None):
+    def __init__(self, configFileName, macro=None, verbose=False):
 
-        self.walker = parseConfig(configFileName, macro)
+        self.walker = parseConfig(configFileName, macro, verbose)
         self.header = urwid.Text(u"Terminal EPICS Client")
         self.footer = urwid.AttrMap(urwid.Text(self.footer_text), 'foot')
         self.view = urwid.Frame(
@@ -399,7 +425,7 @@ class terminal_client:
         self.loop.run()
 
     def unhandled_input(self, k):
-        # update display of focus directory
+        # Exit program
         if k in ('q', 'Q'):
             raise urwid.ExitMainLoop()
 
@@ -416,10 +442,9 @@ if __name__ == '__main__':
 
     if args.config:
         if os.path.isfile(yaml_path + args.config):
-            screen = terminal_client(yaml_path + args.config, args.macro)
+            screen = terminal_client(yaml_path + args.config, args.macro, args.verbose)
         else:
-            screen = terminal_client(args.config, args.macro)
+            screen = terminal_client(args.config, args.macro, args.verbose)
         screen.main()
     else:
-        screen = terminal_client('test.yaml')
-        screen.main()
+        print('Please define a YAML configuration file using -c')

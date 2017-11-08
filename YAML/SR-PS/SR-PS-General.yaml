@@ -8,16 +8,16 @@
   - {type: divider, width: 1}
 - - {type: divider, width: 50}
   - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 30 &> /dev/null,
-    text: '30', type: button, width: 11}
+    text: '30', align_text: center, type: button, width: 11}
   - {type: divider, width: 1}
   - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 25 &> /dev/null,
-    text: '25', type: button, width: 11}
+    text: '25', align_text: center, type: button, width: 11}
   - {type: divider, width: 1}
   - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 20 &> /dev/null,
-    text: '20', type: button, width: 11}
+    text: '20', align_text: center, type: button, width: 11}
   - {type: divider, width: 1}
   - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 15 &> /dev/null,
-    text: '15', type: button, width: 11}
+    text: '15', align_text: center, type: button, width: 11}
 - - {markup: Dipole, type: text, width: 13, wrap: clip}
 - - {markup: SR-PS-BM, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
@@ -28,7 +28,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SR-PS-BM, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SR-PS-BM, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -67,7 +67,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC01-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC01-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -99,7 +99,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC01-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC01-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -130,7 +130,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC01-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC01-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -162,7 +162,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC01-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC01-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -193,7 +193,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC02-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC02-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -225,7 +225,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC02-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC02-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -256,7 +256,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC02-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC02-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -288,7 +288,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC02-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC02-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -319,7 +319,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC03-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC03-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -351,7 +351,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC03-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC03-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -382,7 +382,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC03-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC03-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -414,7 +414,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC03-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC03-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -445,7 +445,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC04-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC04-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -477,7 +477,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC04-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC04-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -508,7 +508,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC04-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC04-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -540,7 +540,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC04-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC04-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -571,7 +571,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC05-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC05-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -603,7 +603,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC05-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC05-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -634,7 +634,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC05-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC05-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -666,7 +666,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC05-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC05-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -697,7 +697,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC06-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC06-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -729,7 +729,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC06-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC06-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -760,7 +760,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC06-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC06-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -792,7 +792,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC06-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC06-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -823,7 +823,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC07-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC07-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -855,7 +855,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC07-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC07-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -886,7 +886,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC07-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC07-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -918,7 +918,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC07-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC07-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -949,7 +949,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC08-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC08-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -981,7 +981,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC08-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC08-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1012,7 +1012,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC08-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC08-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1044,7 +1044,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC08-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC08-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1075,7 +1075,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC09-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC09-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1107,7 +1107,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC09-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC09-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1138,7 +1138,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC09-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC09-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1170,7 +1170,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC09-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC09-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1201,7 +1201,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC10-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC10-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1233,7 +1233,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC10-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC10-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1264,7 +1264,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC10-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC10-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1296,7 +1296,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC10-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC10-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1327,7 +1327,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC11-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC11-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1359,7 +1359,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC11-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC11-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1390,7 +1390,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC11-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC11-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1422,7 +1422,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC11-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC11-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1453,7 +1453,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC12-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC12-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1485,7 +1485,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC12-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC12-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1516,7 +1516,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC12-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC12-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1548,7 +1548,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC12-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC12-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1579,7 +1579,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC13-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC13-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1611,7 +1611,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC13-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC13-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1642,7 +1642,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC13-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC13-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1674,7 +1674,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC13-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC13-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1705,7 +1705,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC14-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC14-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1738,7 +1738,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC14-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC14-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1769,7 +1769,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC14-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC14-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1801,7 +1801,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC14-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC14-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1832,7 +1832,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC15-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC15-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1864,7 +1864,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC15-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC15-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1895,7 +1895,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC15-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC15-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1927,7 +1927,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC15-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC15-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1958,7 +1958,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC16-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC16-PS-QF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -1990,7 +1990,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC16-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC16-PS-QD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2021,7 +2021,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC16-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC16-PS-QF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2053,7 +2053,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SRC16-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SRC16-PS-QD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2092,7 +2092,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SR-PS-SF1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SR-PS-SF1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2124,7 +2124,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SR-PS-SD1, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SR-PS-SD1, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2155,7 +2155,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SR-PS-SF2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SR-PS-SF2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
@@ -2187,7 +2187,7 @@
     type: LED
     width: 2
     yellow_values: [Standby]
-  - {device_name: SR-PS-SD2, display_precision: 3, enum: true, pv_name: getStateHandler,
+  - {device_name: SR-PS-SD2, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
     type: analog_input, width: 7}
   - enum: true
     green_values: [Semiauto Active, Auto Active, Manual Active]
