@@ -332,7 +332,10 @@ class button(urwid.AttrMap):
             self.pv.put(self.click_value)
         else:
             screen.loop.screen.clear()
-            subprocess.call(bin_path + self.run_script, shell=True)
+            if os.path.isfile(bin_path + self.run_script):
+                subprocess.call(bin_path + self.run_script, shell=True)
+            else:
+                subprocess.call(self.run_script, shell=True)
             screen.loop.screen.clear()
 
 

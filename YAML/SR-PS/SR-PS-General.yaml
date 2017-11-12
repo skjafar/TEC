@@ -4,16 +4,16 @@
   - {device_name: SRC01-DI-DCCT1, display_precision: 3, enum: false, pv_name: getDcctCurrent, align_text: center,
     type: analog_input, width: 9, unit: mA}
 - - {type: divider, width: 2}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Openloop &> /dev/null,
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setCommand Openloop &> /dev/null,
     text: 'Openloop', align_text: center, type: button, width: 12}
   - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Off &> /dev/null,
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setCommand Off &> /dev/null,
     text: 'Off', align_text: center, type: button, width: 12}
   - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Standby &> /dev/null,
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setCommand Standby &> /dev/null,
     text: 'Standby', align_text: center, type: button, width: 12}
   - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand On &> /dev/null,
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setCommand On &> /dev/null,
     text: 'On', align_text: center, type: button, width: 12}
   - {type: divider, width: 12}
   - {markup: 'Beam Energy:', type: text, width: 14, wrap: clip}
@@ -51,6 +51,12 @@
   - {type: divider, width: 1}
   - {device_name: SR-PS-BM, pv_name: subExample, run_script: TEC
       -c SR-PS/SR-PS-Single.yaml -m SR-PS-BM, text: Details, type: button, width: 11}
+  - {type: divider, width: 4}
+  - {device_name: SR-PS, pv_name: noname, run_script: Cycle_Magnets.py,
+    text: 'Cycle Magnets', align_text: center, type: button, width: 17}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS, pv_name: noname, run_script: PS_Ramping.py,
+    text: 'Ramp PS', align_text: center, type: button, width: 12}
 - - {type: divider, width: 1}
 - - {markup: Quadrupoles, type: text, width: 13, wrap: clip}
   - {type: divider, width: 29}
@@ -89,7 +95,7 @@
     width: 8}
   - {type: divider, width: 1}
   - {device_name: SRC01-PS-QF1, pv_name: subExample, run_script: TEC
-      -c SR-PS/SR-PS-Single.yaml -m SRC01-PS-QF2, text: Details, type: button, width: 11}
+      -c SR-PS/SR-PS-Single.yaml -m SRC01-PS-QF1, text: Details, type: button, width: 11}
   - {type: divider, width: 2}
   - {markup: SRC01-PS-QD1, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
