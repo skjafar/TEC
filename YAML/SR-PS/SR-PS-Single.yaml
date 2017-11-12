@@ -28,7 +28,7 @@
   - {device_name: %M, display_precision: 3, enum: true, pv_name: getStateSequencer, align_text: center,
     type: analog_input, width: 8}
   - {type: divider, width: 4}
-  - {text: 'Faults', type: button,align_text: center, run_script: TEC -c SR-PS/Faults.yaml -m %M,width: 13}
+  - {text: 'Faults', type: button,align_text: center, run_script: TEC -c SR-PS/SR-PS-Faults.yaml -m %M,width: 13}
 - - {markup: Iload, type: text, width: 10, wrap: clip}
   - {display_precision: 3, enum: false, device_name: %M, pv_name: getIload, type: analog_input, align_text: center,
     unit: A, width: 8}

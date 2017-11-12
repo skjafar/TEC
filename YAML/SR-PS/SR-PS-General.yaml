@@ -1,25 +1,25 @@
 - - {markup: Storage Ring Power Supplies Control Panel, type: text, width: 35, wrap: clip}
-  - {type: divider, width: 2}
-- - {type: divider, width: 1}
+  - {type: divider, width: 30}
   - {markup: 'Beam Current:', type: text, width: 14, wrap: clip}
   - {device_name: SRC01-DI-DCCT1, display_precision: 3, enum: false, pv_name: getDcctCurrent, align_text: center,
     type: analog_input, width: 9, unit: mA}
-- - {type: divider, width: 1}
+- - {type: divider, width: 2}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Openloop &> /dev/null,
+    text: 'Openloop', align_text: center, type: button, width: 12}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Off &> /dev/null,
+    text: 'Off', align_text: center, type: button, width: 12}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand Standby &> /dev/null,
+    text: 'Standby', align_text: center, type: button, width: 12}
+  - {type: divider, width: 1}
+  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setCommand On &> /dev/null,
+    text: 'On', align_text: center, type: button, width: 12}
+  - {type: divider, width: 12}
   - {markup: 'Beam Energy:', type: text, width: 14, wrap: clip}
   - {device_name: SR-DI, display_precision: 3, enum: false, pv_name: getBeamEnergy, align_text: center,
     type: analog_input, width: 9, unit: GeV}
-- - {type: divider, width: 50}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 30 &> /dev/null,
-    text: '30', align_text: center, type: button, width: 11}
-  - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 25 &> /dev/null,
-    text: '25', align_text: center, type: button, width: 11}
-  - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 20 &> /dev/null,
-    text: '20', align_text: center, type: button, width: 11}
-  - {type: divider, width: 1}
-  - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 15 &> /dev/null,
-    text: '15', align_text: center, type: button, width: 11}
+- - {type: divider, width: 1}
 - - {markup: Dipole, type: text, width: 13, wrap: clip}
 - - {markup: SR-PS-BM, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}

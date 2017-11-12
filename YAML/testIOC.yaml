@@ -1,0 +1,37 @@
+- - {markup: %M Control Panel, type: text, width: 23, wrap: clip}
+- - {device_name: %M, pv_name: calcEg1, click_value: 20,
+    text: 'Open Loop', type: button,align_text: center, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'Off',
+    text: 'Off', type: button,align_text: center, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'Standby',
+    text: 'Standby', type: button,align_text: center, width: 13}
+  - {type: divider, width: 1}
+  - {device_name: %M, pv_name: setCommand, click_value: 'On',
+    text: 'On', type: button,align_text: center, width: 13}
+- - {type: divider, width: 1}
+- - {markup: State, type: text, width: 8, wrap: clip}
+  - enum: false
+    green_values: ['On']
+    device_name: %M
+    pv_name: calcEg1
+    red_values: [1, 3, 5, 7]
+    type: LED
+    width: 2
+    yellow_values: [2, 4, 6, 8]
+    green_values: [0, 9]
+  - {device_name: %M, display_precision: 3, enum: true, pv_name: getStateHandler, align_text: center,
+    type: analog_input, width: 8}
+  - {type: divider, width: 2}
+  - {device_name: %M, display_precision: 3, enum: true, pv_name: getStateSequencer, align_text: center,
+    type: analog_input, width: 8}
+- - {markup: Iload, type: text, width: 10, wrap: clip}
+  - {display_precision: 3, enum: false, device_name: %M, pv_name: calcEg1, type: analog_input, align_text: center,
+    unit: A, width: 20}
+  - {type: divider, width: 2}
+  - {device_name: %M, display_precision: 3, pv_name: calcEg1, type: analog_output, align_text: center,
+    width: 20}
+- - {markup: Vmon, type: text, width: 10, wrap: clip}
+  - {display_precision: 3, enum: false, device_name: %M, pv_name: calcEg2, type: analog_input, align_text: center,
+    unit: V, width: 20}
