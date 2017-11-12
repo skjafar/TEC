@@ -1,11 +1,13 @@
-- - {markup: PS Name, type: text, width: 13, wrap: clip}
+- - {markup: Storage Ring Power Supplies Control Panel, type: text, width: 35, wrap: clip}
   - {type: divider, width: 2}
-  - {markup: State, type: text, width: 7, wrap: clip}
-  - {type: divider, width: 2}
-  - {markup: Voltage, type: text, width: 8, wrap: clip}
-  - {type: divider, width: 1}
-  - {markup: Current, type: text, width: 8, wrap: clip}
-  - {type: divider, width: 1}
+- - {type: divider, width: 1}
+  - {markup: 'Beam Current:', type: text, width: 14, wrap: clip}
+  - {device_name: SRC01-DI-DCCT1, display_precision: 3, enum: false, pv_name: getDcctCurrent, align_text: center,
+    type: analog_input, width: 9, unit: mA}
+- - {type: divider, width: 1}
+  - {markup: 'Beam Energy:', type: text, width: 14, wrap: clip}
+  - {device_name: SR-DI, display_precision: 3, enum: false, pv_name: getBeamEnergy, align_text: center,
+    type: analog_input, width: 9, unit: GeV}
 - - {type: divider, width: 50}
   - {device_name: SRC16-PS-QD2, pv_name: subExample, run_script: GeneralSet.sh setWaveform3Top 30 &> /dev/null,
     text: '30', align_text: center, type: button, width: 11}

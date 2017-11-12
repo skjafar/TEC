@@ -24,6 +24,7 @@ parser.add_argument('-v','--verbose', help="increase output verbosity", action="
 divider = urwid.Divider
 text = urwid.Text
 fill = urwid.SolidFill
+
 try:
     TEC_path = os.environ['TEC_PATH']
     bin_path = TEC_path + '/bin/'
@@ -61,18 +62,17 @@ class float_edit(urwid.Edit):
 
     def __init__(self, pv_name, align_t='left', display_precision=-1):
         """
-        
+        Initializing float_edit widget in 'disconnected' mode
         """
         self.pv_name = pv_name
         self.count += 1
-        self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
+        self.pv = epics.pv.PV(self.pv_name, auto_monitor=True, connection_timeout=0.00001)
+        self.conn = False
         if display_precision < 0:
             self.display_precision = self.pv.precision
         else:
             self.display_precision = display_precision
-        self.pv.get()
-        val = "{:.{}f}".format(self.pv.get(), self.display_precision)
-        self.__super.__init__(edit_text=val, wrap='clip', align=align_t)
+        self.__super.__init__(edit_text='Disconnected', wrap='clip', align=align_t)
 
     def keypress(self, size, key):
         """
@@ -170,15 +170,13 @@ class analog_input(urwid.AttrMap):
         else:
             self.unit = ''
         self.enum = enum
-        self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change)
+        self.conn = False
+        self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change, connection_timeout=0.00001)
         if display_precision < 0:
             self.display_precision = self.pv.precision
         else:
             self.display_precision = display_precision
-        if self.enum:
-            super().__init__(urwid.Text(self.pv.char_value, align=align_text, wrap='clip'), 'analog_input')
-        else:
-            super().__init__(urwid.Text((u'{:.{}f}{}'.format(self.pv.value, self.display_precision, self.unit)), wrap='clip'), 'analog_input')
+        super().__init__(urwid.Text('Disconnected', align=align_text, wrap='clip'), 'disconnected')
         self.pv.add_callback(callback=self.change_value)
 
     def change_value(self, **kw):
@@ -188,8 +186,12 @@ class analog_input(urwid.AttrMap):
             self.original_widget.set_text(u'{:.{}f}{}'.format(self.pv.value, self.display_precision, self.unit))
 
     def on_connection_change(self, conn, **kw):
-        if conn == True:
+        self.conn = conn
+        if conn:
+            super().set_attr_map({None: 'analog_input'})
+        else:
             super().set_attr_map({None: 'disconnected'})
+            self.original_widget.set_text('Disconnected')
 
 
 class analog_output(urwid.AttrMap):
@@ -204,7 +206,7 @@ class analog_output(urwid.AttrMap):
         self.count += 1
         self.display_precision = display_precision
         self.editing = False
-        self.__super.__init__(float_edit(self.pv_name, align_t=align_text, display_precision=self.display_precision), 'analog_output', focus_map='analog_output_focus')
+        self.__super.__init__(float_edit(self.pv_name, align_t=align_text, display_precision=self.display_precision), 'disconnected', focus_map='disconnected')
         self.original_widget.pv.connection_callbacks.append(self.on_connection_change)
         self.original_widget.pv.add_callback(callback=self.change_value)
 
@@ -213,20 +215,23 @@ class analog_output(urwid.AttrMap):
         Handle enter key to start editing the contents of the field, pass everything else to the parent
         """
         (maxcol,) = size
-
-        if key == "enter":
-            if self.editing:
-                self.editing = False
-                point_pos = self.original_widget.edit_text.find('.')
-                if point_pos >= 0 and self.original_widget.edit_text != '.' and self.original_widget.edit_text != '-.':
-                    self.original_widget.set_edit_text('{:.{}f}'.format(float(self.original_widget.edit_text), self.original_widget.display_precision))
-                super().set_focus_map({None: 'analog_output_focus'})
-                self.original_widget.write_value()
-            else:
-                self.editing = True
-                super().set_focus_map({None: 'analog_output_edit'})
-                self.original_widget.set_edit_pos(0)
-            return None
+        
+        if self.original_widget.conn:
+            if key == "enter":
+                if self.editing:
+                    self.editing = False
+                    point_pos = self.original_widget.edit_text.find('.')
+                    if point_pos >= 0 and self.original_widget.edit_text != '.' and self.original_widget.edit_text != '-.':
+                        self.original_widget.set_edit_text('{:.{}f}'.format(float(self.original_widget.edit_text), self.original_widget.display_precision))
+                    super().set_focus_map({None: 'analog_output_focus'})
+                    self.original_widget.write_value()
+                else:
+                    self.editing = True
+                    super().set_focus_map({None: 'analog_output_edit'})
+                    self.original_widget.set_edit_pos(0)
+                return None
+        else:
+            self.editing = False
 
         if self.editing:
             unhandled = self.original_widget.keypress((maxcol, ), key)
@@ -236,9 +241,15 @@ class analog_output(urwid.AttrMap):
         return unhandled
 
     def on_connection_change(self, conn, **kw):
-        if conn == 'False':
+        self.original_widget.conn = conn
+        if conn:
+            super().set_attr_map({None: 'analog_output'})
+            super().set_focus_map({None: 'analog_output_focus'})
+        else:
+            self.editing = False
             super().set_attr_map({None: 'disconnected'})
-        # This does not work, fix it
+            super().set_focus_map({None: 'disconnected'})
+            self.original_widget.set_edit_text('Disconnected')
 
     def change_value(self, **kw):
         self.original_widget.set_edit_text(u'{:.{}f}'.format(self.original_widget.pv.value, self.display_precision))
@@ -249,7 +260,7 @@ class LED(urwid.AttrMap):
 
     count = 0
 
-    def __init__(self, pv_name, red_values=[], green_values=[], yellow_values=[], enum=False):
+    def __init__(self, pv_name, red_values=[None], green_values=[None], yellow_values=[None], enum=False):
         """
         
         """
@@ -259,24 +270,23 @@ class LED(urwid.AttrMap):
         self.yellow_values = yellow_values
         self.count += 1
         self.enum = enum
-        self.__super.__init__(urwid.Divider(), '{}_LED_off'.format('red'))
-        self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change)
+        self.__super.__init__(urwid.Divider(), 'disconnected')
+        self.pv = epics.pv.PV(self.pv_name, form='ctrl', auto_monitor=True, connection_callback=self.on_connection_change, connection_timeout=0.00001)
         if self.enum:
             self.pv.add_callback(callback=self.change_value_enum)
-            self.change_value_enum(self.pv.char_value)
         else:
             self.pv.add_callback(callback=self.change_value)
-            self.change_value(self.pv.value)
 
     def change_value_enum(self, char_value, **kw):
-        if char_value.decode('utf8') in self.red_values:
-            super().set_attr_map({None: 'red_LED_on'})
-        elif char_value.decode('utf8') in self.yellow_values:
-            super().set_attr_map({None: 'yellow_LED_on'})
-        elif char_value.decode('utf8') in self.green_values:
-            super().set_attr_map({None: 'green_LED_on'})
-        else:
-            super().set_attr_map({None: 'LED_off'})
+        if char_value:
+            if char_value.decode('utf8') in self.red_values:
+                super().set_attr_map({None: 'red_LED_on'})
+            elif char_value.decode('utf8') in self.yellow_values:
+                super().set_attr_map({None: 'yellow_LED_on'})
+            elif char_value.decode('utf8') in self.green_values:
+                super().set_attr_map({None: 'green_LED_on'})
+            else:
+                super().set_attr_map({None: 'LED_off'})
 
     def change_value(self, value, **kw):
         if value in self.red_values:
@@ -289,7 +299,12 @@ class LED(urwid.AttrMap):
             super().set_attr_map({None: 'LED_off'})
 
     def on_connection_change(self, conn, **kw):
-        if conn == 'False':
+        if conn:
+            if self.enum:
+                self.change_value_enum(self.pv.char_value)
+            else:
+                self.change_value(self.pv.value)
+        else:
             super().set_attr_map({None: 'disconnected'})
 
 
@@ -307,7 +322,7 @@ class button(urwid.AttrMap):
         self.run_script = run_script
         self.count += 1
         if pv_name is not None:
-            self.pv = epics.pv.PV(self.pv_name, auto_monitor=True)
+            self.pv = epics.pv.PV(self.pv_name, auto_monitor=True, connection_timeout=0.00001)
         self.__super.__init__(urwid.Button(text), 'None',focus_map='button')
         self.original_widget._label.align = align_text
         urwid.connect_signal(self.original_widget, 'click', self.clicked)
@@ -400,8 +415,8 @@ class terminal_client:
         ('key', "LEFT"), "  ",
         ('key', "HOME"), "  ",
         ('key', "END"), "  ",
-        ('key', "CTRL+l"), " ",
-        ('key', "Q"),
+        ('key', "CTRL+l: Redraw Screen"), "  ",
+        ('key', "Q: Exit"),
         ]
 
     update_rate = 0.1
