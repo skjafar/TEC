@@ -332,7 +332,7 @@ class button(urwid.AttrMap):
             self.pv.put(self.click_value)
         else:
             screen.loop.screen.clear()
-            if os.path.isfile(bin_path + self.run_script):
+            if os.path.isfile(bin_path + self.run_script.split()[0]):
                 subprocess.call(bin_path + self.run_script, shell=True)
             else:
                 subprocess.call(self.run_script, shell=True)
@@ -422,7 +422,7 @@ class terminal_client:
         ('key', "Q: Exit"),
         ]
 
-    update_rate = 0.1
+    update_rate = 0.5
 
     def __init__(self, configFileName, macro=None, verbose=False):
 

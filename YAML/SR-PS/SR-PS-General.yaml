@@ -49,8 +49,7 @@
   - {device_name: SR-PS-BM, display_precision: 3, pv_name: setReference, type: analog_output,
     width: 8}
   - {type: divider, width: 1}
-  - {device_name: SR-PS-BM, pv_name: subExample, run_script: TEC
-      -c SR-PS/SR-PS-Single.yaml -m SR-PS-BM, text: Details, type: button, width: 11}
+  - {device_name: SR-PS-BM, pv_name: subExample, run_script: TEC -c SR-PS/SR-PS-Single.yaml -m SR-PS-BM, text: Details, type: button, width: 11}
   - {type: divider, width: 4}
   - {device_name: SR-PS, pv_name: noname, run_script: Cycle_Magnets.py,
     text: 'Cycle Magnets', align_text: center, type: button, width: 17}
