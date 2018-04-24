@@ -20,6 +20,12 @@
   - {device_name: SR-DI, display_precision: 3, enum: false, pv_name: getBeamEnergy, align_text: center,
     type: analog_input, width: 9, unit: GeV}
 - - {type: divider, width: 1}
+- - {type: divider, width: 2}
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setMode DC &> /dev/null,
+    text: 'DC', align_text: center, type: button, width: 12}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setMode Waveform &> /dev/null,
+    text: 'Waveform', align_text: center, type: button, width: 12}
 - - {markup: Dipole, type: text, width: 13, wrap: clip}
 - - {markup: SR-PS-BM, type: text, width: 12, wrap: clip}
   - {type: divider, width: 1}
@@ -56,6 +62,9 @@
   - {type: divider, width: 1}
   - {device_name: SR-PS, pv_name: noname, run_script: PS_Ramping.py,
     text: 'Ramp PS', align_text: center, type: button, width: 12}
+  - {type: divider, width: 1}
+  - {device_name: SR-PS, pv_name: noname, run_script: GeneralSet.sh setCommand Reset &> /dev/null,
+    text: 'Reset All', align_text: center, type: button, width: 13}
 - - {type: divider, width: 1}
 - - {markup: Quadrupoles, type: text, width: 13, wrap: clip}
   - {type: divider, width: 29}

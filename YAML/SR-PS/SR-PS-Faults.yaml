@@ -436,3 +436,7 @@
     width: 2
   - {type: divider, width: 2}
   - {device_name: %M, display_precision: 3, enum: true, pv_name: getPcoFaults1.B7ST, type: analog_input, width: 8}
+- - {type: divider, width: 2}
+- - {type: divider, width: 2}
+  - {device_name: %M, pv_name: setCommand, click_value: 'Reset',
+    text: 'Reset', type: button,align_text: center, width: 14}
