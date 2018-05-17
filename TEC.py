@@ -51,6 +51,7 @@ class FieldParseError(Error):
 
 
 class float_edit(urwid.Edit):
+
     """Container widget for writing to float output PVs"""
     count = 0
 
@@ -158,6 +159,23 @@ class float_edit(urwid.Edit):
             return 0
 
 
+class float_text(urwid.Text):
+    """
+    Text widget that can be selected
+    """
+    # def selectable(self):
+    #     """
+    #     Make the widget selectable
+    #     """
+    #     return True
+
+    def keypress(self, size, key):
+        """
+        Handle key strokes
+        """
+        return key
+
+
 class analog_input(urwid.AttrMap):
     """Container widget for reading analog input PVs"""
     count = 0
@@ -176,7 +194,11 @@ class analog_input(urwid.AttrMap):
             self.display_precision = self.pv.precision
         else:
             self.display_precision = display_precision
-        super().__init__(urwid.Text('Disconnected', align=align_text, wrap='clip'), 'disconnected')
+        super().__init__(float_text('Disconnected', align=align_text, wrap='clip'), 'disconnected', focus_map= 'disconnected')
+        if self.enum:
+            self.original_widget._selectable = False
+        else:
+            self.original_widget._selectable = True
         self.pv.add_callback(callback=self.change_value)
 
     def change_value(self, **kw):
@@ -189,9 +211,20 @@ class analog_input(urwid.AttrMap):
         self.conn = conn
         if conn:
             super().set_attr_map({None: 'analog_input'})
+            super().set_focus_map({None: 'analog_input_focus'})
         else:
             super().set_attr_map({None: 'disconnected'})
+            super().set_focus_map({None: 'disconnected'})
             self.original_widget.set_text('Disconnected')
+
+    def keypress(self, size, key):
+        """
+        Handle key strokes
+        """
+        if key is 'p':
+            subprocess.call('ConsolePlot.sh {} {}'.format(self.pv_name, 100000), shell=True)
+        else:
+            return key
 
 
 class analog_output(urwid.AttrMap):
@@ -397,6 +430,7 @@ class terminal_client:
         ('title', 'white', 'black'),
         ('disconnected', 'black', 'dark magenta'),
         ('analog_input', 'black', 'light blue'),
+        ('analog_input_focus', 'white', 'dark blue'),
         ('analog_output', 'black', 'dark cyan'),
         ('analog_output_focus', 'black', 'light cyan'),
         ('analog_output_edit', 'dark red', 'light cyan'),
