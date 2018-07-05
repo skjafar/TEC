@@ -240,7 +240,7 @@ class analog_input(urwid.AttrMap):
     count = 0
 
     def __init__(
-        self, pv_name, enum=False, display_precision=-1, unit=None, align_text="left"
+        self, pv_name, enum=False, display_precision=-1, unit=None, align_text="left", script=None
     ):
         self.pv_name = pv_name
         self.count += 1
@@ -249,6 +249,9 @@ class analog_input(urwid.AttrMap):
         else:
             self.unit = ""
         self.enum = enum
+        self.script = script
+        if self.script is not None:
+            self.enum = False
         self.conn = False
         self.pv = epics.pv.PV(
             self.pv_name,
@@ -273,12 +276,21 @@ class analog_input(urwid.AttrMap):
         self.pv.add_callback(callback=self.change_value)
 
     def change_value(self, **kw):
-        if self.enum:
-            self.original_widget.set_text((self.pv.char_value))
+        if self.script is None:
+            if self.enum:
+                self.original_widget.set_text((self.pv.char_value))
+            else:
+                self.original_widget.set_text(
+                    u"{:.{}f}{}".format(self.pv.value, self.display_precision, self.unit)
+                )
         else:
-            self.original_widget.set_text(
-                u"{:.{}f}{}".format(self.pv.value, self.display_precision, self.unit)
-            )
+            output = subprocess.run("{} {}".format(self.script, self.pv.value), shell=True, stdout=subprocess.PIPE)
+            output = output.stdout.decode("utf-8")
+            if output.count("\n") > 1:
+                self.original_widget.set_text("Invalid output from string")
+            else:
+                output = output.replace("\n", "")
+                self.original_widget.set_text(output)
 
     def on_connection_change(self, conn, **kw):
         self.conn = conn
@@ -294,7 +306,7 @@ class analog_input(urwid.AttrMap):
         """
         Handle key strokes
         """
-        if key is "p":
+        if key is "p" and not self.enum:
             subprocess.call(
                 "ConsolePlot.sh {} {}".format(self.pv_name, 100000), shell=True
             )
@@ -308,7 +320,7 @@ class analog_output(urwid.AttrMap):
 
     def __init__(self, pv_name, display_precision=-1, align_text="left"):
         """
-        
+
         """
         self.pv_name = pv_name
         self.count += 1
@@ -396,7 +408,7 @@ class LED(urwid.AttrMap):
         enum=False,
     ):
         """
-        
+
         """
         self.pv_name = pv_name
         self.red_values = red_values
@@ -463,7 +475,7 @@ class button(urwid.AttrMap):
         align_text="left",
     ):
         """
-        
+
         """
         self.pv_name = pv_name
         self.click_value = click_value
