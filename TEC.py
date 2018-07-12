@@ -494,7 +494,7 @@ class button(urwid.AttrMap):
         pv_name=None,
         click_value=1,
         enum=False,
-        run_script=None,
+        script=None,
         align_text="left",
     ):
         """
@@ -502,7 +502,7 @@ class button(urwid.AttrMap):
         """
         self.pv_name = pv_name
         self.click_value = click_value
-        self.run_script = run_script
+        self.script = script
         self.count += 1
         if pv_name is not None:
             self.pv = epics.pv.PV(
@@ -513,14 +513,14 @@ class button(urwid.AttrMap):
         urwid.connect_signal(self.original_widget, "click", self.clicked)
 
     def clicked(self, *args):
-        if self.run_script is None:
+        if self.script is None:
             self.pv.put(self.click_value)
         else:
             screen.loop.screen.clear()
-            if os.path.isfile(bin_path + self.run_script.split()[0]):
-                subprocess.call(bin_path + self.run_script, shell=True)
+            if os.path.isfile(bin_path + self.script.split()[0]):
+                subprocess.call(bin_path + self.script, shell=True)
             else:
-                subprocess.call(self.run_script, shell=True)
+                subprocess.call(self.script, shell=True)
             screen.loop.screen.clear()
 
 
