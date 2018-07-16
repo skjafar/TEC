@@ -218,23 +218,6 @@ class float_edit(urwid.Edit):
             return 0
 
 
-class float_text(urwid.Text):
-    """
-    Text widget that can be selected
-    """
-    # def selectable(self):
-    #     """
-    #     Make the widget selectable
-    #     """
-    #     return True
-
-    def keypress(self, size, key):
-        """
-        Handle key strokes
-        """
-        return key
-
-
 class analog_input(urwid.AttrMap):
     """Container widget for reading analog input PVs"""
     count = 0
@@ -265,7 +248,7 @@ class analog_input(urwid.AttrMap):
         else:
             self.display_precision = display_precision
         super().__init__(
-            float_text("Disconnected", align=align_text, wrap="clip"),
+            urwid.Text("Disconnected", align=align_text, wrap="clip"),
             "disconnected",
             focus_map="disconnected",
         )
