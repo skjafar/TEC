@@ -17,7 +17,8 @@ import subprocess
 screen = None
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", help="YAML file with page configuration")
+parser.add_argument("-cf", "--config", help="YAML file with page configuration")
+parser.add_argument("-hf", "--header", help="YAML file with header configuration, usually for sonsitant headers")
 parser.add_argument("-m", "--macro", help='replace every "%M" with this given value')
 parser.add_argument(
     "-v", "--verbose", help="increase output verbosity", action="store_true"
@@ -511,19 +512,18 @@ def str2Class(str):
     return getattr(sys.modules[__name__], str)
 
 
-def parseConfig(file, macro, verbose=False):
+def parseConfig(file, macro=None, verbose=False, header=None):
 
     inputFile = open(file, "r")
     readFile = inputFile.read()
     inputFile.close()
-
     if macro:
         if "%M" in readFile:
             readFile = readFile.replace("%M", macro)
 
         else:
             input(
-                "The YAML file does not contain any Macro designator [%M]. Press any key to evaluate the file normally"
+                "The YAML file {} does not contain any Macro designator [%M]. Press any key to evaluate the file normally".format(file)
             )
 
     pageConfig = yaml.load(readFile)
@@ -565,8 +565,12 @@ def parseConfig(file, macro, verbose=False):
             field.pop("width")
             columns_list.append(("fixed", fieldWidth, str2Class(fieldType)(**field)))
         rows_list.append(urwid.Columns(columns_list))
-
-    return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
+    
+    if header:
+        print(urwid.Columns(columns_list))
+        return urwid.Columns(columns_list)
+    else:
+        return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
 
 
 class terminal_client:
@@ -619,10 +623,17 @@ class terminal_client:
 
     update_rate = 0.5
 
-    def __init__(self, configFileName, macro=None, verbose=False):
+    def __init__(self, configFileName, headerConfigFileName=None, macro=None, verbose=False):
 
-        self.walker = parseConfig(configFileName, macro, verbose)
-        self.header = urwid.Text(u"Terminal EPICS Client")
+        if verbose:
+                print("Parsing config file: {}".format(configFileName))
+        self.walker = parseConfig(configFileName, macro=macro, verbose=verbose)
+        if headerConfigFileName:
+            if verbose:
+                print("Parsing header file: {}".format(headerConfigFileName))
+            self.header = parseConfig(headerConfigFileName, verbose=verbose, header=True)
+        else:
+            self.header = urwid.Text(u"Terminal EPICS Client")
         self.footer = urwid.AttrMap(urwid.Text(self.footer_text), "foot")
         self.view = urwid.Frame(
             urwid.AttrMap(self.walker, "body"),
@@ -658,12 +669,11 @@ def main():
 
 if __name__ == "__main__":
     args = parser.parse_args()
-
     if args.config:
         if os.path.isfile(yaml_path + args.config):
-            screen = terminal_client(yaml_path + args.config, args.macro, args.verbose)
+            screen = terminal_client(yaml_path + args.config, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
         else:
-            screen = terminal_client(args.config, args.macro, args.verbose)
+            screen = terminal_client(args.config, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
         screen.main()
     else:
         print("Please define a YAML configuration file using -c")
