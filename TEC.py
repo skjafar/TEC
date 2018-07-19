@@ -567,7 +567,6 @@ def parseConfig(file, macro=None, verbose=False, header=None):
         rows_list.append(urwid.Columns(columns_list))
     
     if header:
-        print(urwid.Columns(columns_list))
         return urwid.Columns(columns_list)
     else:
         return urwid.ListBox(urwid.SimpleFocusListWalker(rows_list))
