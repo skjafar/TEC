@@ -219,7 +219,7 @@ class float_edit(urwid.Edit):
             return 0
 
 
-class analog_input(urwid.AttrMap):
+class getPV(urwid.AttrMap):
     """Container widget for reading analog input PVs"""
     count = 0
 
@@ -279,8 +279,8 @@ class analog_input(urwid.AttrMap):
     def on_connection_change(self, conn, **kw):
         self.conn = conn
         if conn:
-            super().set_attr_map({None: "analog_input"})
-            super().set_focus_map({None: "analog_input_focus"})
+            super().set_attr_map({None: "getPV"})
+            super().set_focus_map({None: "getPV_focus"})
         else:
             super().set_attr_map({None: "disconnected"})
             super().set_focus_map({None: "disconnected"})
@@ -298,7 +298,7 @@ class analog_input(urwid.AttrMap):
             return key
 
 
-class analog_output(urwid.AttrMap):
+class setPV(urwid.AttrMap):
     """container widget to pass color when editing values"""
     count = 0
 
@@ -344,11 +344,11 @@ class analog_output(urwid.AttrMap):
                                 self.original_widget.display_precision,
                             )
                         )
-                    super().set_focus_map({None: "analog_output_focus"})
+                    super().set_focus_map({None: "setPV_focus"})
                     self.original_widget.write_value()
                 else:
                     self.editing = True
-                    super().set_focus_map({None: "analog_output_edit"})
+                    super().set_focus_map({None: "setPV_edit"})
                     self.original_widget.set_edit_pos(0)
                 return None
         else:
@@ -364,8 +364,8 @@ class analog_output(urwid.AttrMap):
     def on_connection_change(self, conn, **kw):
         self.original_widget.conn = conn
         if conn:
-            super().set_attr_map({None: "analog_output"})
-            super().set_focus_map({None: "analog_output_focus"})
+            super().set_attr_map({None: "setPV"})
+            super().set_focus_map({None: "setPV_focus"})
         else:
             self.editing = False
             super().set_attr_map({None: "disconnected"})
@@ -553,8 +553,8 @@ def parseConfig(file, macro=None, verbose=False, header=None):
             if fieldType not in [
                 "text",
                 "LED",
-                "analog_input",
-                "analog_output",
+                "getPV",
+                "setPV",
                 "button",
                 "divider",
             ]:
@@ -580,11 +580,11 @@ class terminal_client:
         ("foot", "light gray", "black"),
         ("title", "white", "black"),
         ("disconnected", "black", "dark magenta"),
-        ("analog_input", "black", "light blue"),
-        ("analog_input_focus", "white", "dark blue"),
-        ("analog_output", "black", "dark cyan"),
-        ("analog_output_focus", "black", "light cyan"),
-        ("analog_output_edit", "dark red", "light cyan"),
+        ("getPV", "black", "light blue"),
+        ("getPV_focus", "white", "dark blue"),
+        ("setPV", "black", "dark cyan"),
+        ("setPV_focus", "black", "light cyan"),
+        ("setPV_edit", "dark red", "light cyan"),
         ("LED_off", "black", "dark gray"),
         ("green_LED_on", "black", "light green"),
         ("red_LED_on", "black", "light red"),
