@@ -57,7 +57,7 @@ class FieldParseError(Error):
         self.message = "{} in field\n{}".format(message, field)
 
 
-class float_edit(urwid.Edit):
+class editPV(urwid.Edit):
 
     """Container widget for writing to float output PVs"""
     count = 0
@@ -68,12 +68,13 @@ class float_edit(urwid.Edit):
         """
         return len(ch) == 1 and ch in "0123456789.-"
 
-    def __init__(self, pv_name, align_t="left", display_precision=-1):
+    def __init__(self, pv_name, enum=False, align_t="left", display_precision=-1):
         """
-        Initializing float_edit widget in 'disconnected' mode
+        Initializing editPV widget in 'disconnected' mode
         """
         self.pv_name = pv_name
         self.count += 1
+        self.enum = enum
         self.pv = epics.pv.PV(
             self.pv_name, auto_monitor=True, connection_timeout=0.00001
         )
@@ -302,7 +303,7 @@ class setPV(urwid.AttrMap):
     """container widget to pass color when editing values"""
     count = 0
 
-    def __init__(self, pv_name, display_precision=-1, align_text="left"):
+    def __init__(self, pv_name, enum=False, display_precision=-1, align_text="left"):
         """
 
         """
@@ -311,8 +312,9 @@ class setPV(urwid.AttrMap):
         self.display_precision = display_precision
         self.editing = False
         self.__super.__init__(
-            float_edit(
+            editPV(
                 self.pv_name,
+                enum=enum,
                 align_t=align_text,
                 display_precision=self.display_precision,
             ),
