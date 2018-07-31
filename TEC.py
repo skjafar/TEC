@@ -75,15 +75,20 @@ class editPV(urwid.Edit):
         self.pv_name = pv_name
         self.count += 1
         self.enum = enum
+        self.enum_strs_len = 0
+        self.enum_strs = []
+        self.enum_strs_index = 0
         self.pv = epics.pv.PV(
-            self.pv_name, auto_monitor=True, connection_timeout=0.00001
+            self.pv_name, auto_monitor=True, connection_timeout=0.0001, form=('ctrl' if self.enum else 'native')
         )
         self.conn = False
+                    
         if display_precision < 0:
             self.display_precision = self.pv.precision
         else:
             self.display_precision = display_precision
         self.__super.__init__(edit_text="Disconnected", wrap="clip", align=align_t)
+
 
     def keypress(self, size, key):
         """
@@ -98,92 +103,117 @@ class editPV(urwid.Edit):
         2
         """
         (maxcol,) = size
-        p = self.edit_pos
+        if not self.enum:
+            p = self.edit_pos
 
-        if self._command_map[key] == CURSOR_LEFT:
-            if p == 0:
-                return None
-        elif self._command_map[key] == CURSOR_RIGHT:
-            if p >= len(self.edit_text):
-                return None
-        elif self._command_map[key] == CURSOR_UP:
-            if (
-                p >= len(self.edit_text)
-                or self.edit_text[p] == "."
-                or self.edit_text[p] == "-"
-            ):
-                return None
-            point_pos = self.edit_text.find(".")
-            if point_pos >= 0:
-                if point_pos < p:
-                    super().set_edit_text(
-                        "{:.{}f}".format(
-                            float(self.edit_text) + (10 ** (-1 * (p - point_pos))),
-                            self.display_precision,
-                        )
-                    )
-                else:
-                    super().set_edit_text(
-                        "{:.{}f}".format(
-                            float(self.edit_text) + (10 ** (-1 * (p + 1 - point_pos))),
-                            self.display_precision,
-                        )
-                    )
-            else:
-                super().set_edit_text(
-                    "{}".format(
-                        int(self.edit_text) + (10 ** (len(self.edit_text) - p - 1))
-                    )
-                )
-            self.write_value()
-            return None
-        elif self._command_map[key] == CURSOR_DOWN:
-            if (
-                0
-                or p >= len(self.edit_text)
-                or self.edit_text[p] == "."
-                or self.edit_text[p] == "-"
-            ):
-                return None
-            point_pos = self.edit_text.find(".")
-            if point_pos >= 0:
-                if point_pos < p:
-                    super().set_edit_text(
-                        "{:.{}f}".format(
-                            float(self.edit_text) - (10 ** (-1 * (p - point_pos))),
-                            self.display_precision,
-                        )
-                    )
-                else:
-                    if self.edit_text[p] == 1:
-                        next_non_zero_index = self.edit_text.match("[1-9]", p + 1)
+            if self._command_map[key] == CURSOR_LEFT:
+                if p == 0:
+                    return None
+            elif self._command_map[key] == CURSOR_RIGHT:
+                if p >= len(self.edit_text):
+                    return None
+            elif self._command_map[key] == CURSOR_UP:
+                if (
+                    p >= len(self.edit_text)
+                    or self.edit_text[p] == "."
+                    or self.edit_text[p] == "-"
+                ):
+                    return None
+                point_pos = self.edit_text.find(".")
+                if point_pos >= 0:
+                    if point_pos < p:
                         super().set_edit_text(
                             "{:.{}f}".format(
-                                float(self.edit_text)
-                                - (10 ** (-1 * (next_non_zero_index - point_pos))),
+                                float(self.edit_text) + (10 ** (-1 * (p - point_pos))),
                                 self.display_precision,
                             )
                         )
                     else:
                         super().set_edit_text(
                             "{:.{}f}".format(
-                                float(self.edit_text)
-                                - (10 ** (-1 * (p + 1 - point_pos))),
+                                float(self.edit_text) + (10 ** (-1 * (p + 1 - point_pos))),
                                 self.display_precision,
                             )
                         )
-            else:
-                super().set_edit_text(
-                    "{}".format(
-                        int(self.edit_text) - (10 ** (len(self.edit_text) - p - 1))
+                else:
+                    super().set_edit_text(
+                        "{}".format(
+                            int(self.edit_text) + (10 ** (len(self.edit_text) - p - 1))
+                        )
                     )
-                )
-            self.write_value()
-            return None
-        elif key == "." and key in self.edit_text:
-            return None
-        elif key == "-" and p != 0:
-            return None
+                self.write_value()
+                return None
+            elif self._command_map[key] == CURSOR_DOWN:
+                if (
+                    0
+                    or p >= len(self.edit_text)
+                    or self.edit_text[p] == "."
+                    or self.edit_text[p] == "-"
+                ):
+                    return None
+                point_pos = self.edit_text.find(".")
+                if point_pos >= 0:
+                    if point_pos < p:
+                        super().set_edit_text(
+                            "{:.{}f}".format(
+                                float(self.edit_text) - (10 ** (-1 * (p - point_pos))),
+                                self.display_precision,
+                            )
+                        )
+                    else:
+                        if self.edit_text[p] == 1:
+                            next_non_zero_index = self.edit_text.match("[1-9]", p + 1)
+                            super().set_edit_text(
+                                "{:.{}f}".format(
+                                    float(self.edit_text)
+                                    - (10 ** (-1 * (next_non_zero_index - point_pos))),
+                                    self.display_precision,
+                                )
+                            )
+                        else:
+                            super().set_edit_text(
+                                "{:.{}f}".format(
+                                    float(self.edit_text)
+                                    - (10 ** (-1 * (p + 1 - point_pos))),
+                                    self.display_precision,
+                                )
+                            )
+                else:
+                    super().set_edit_text(
+                        "{}".format(
+                            int(self.edit_text) - (10 ** (len(self.edit_text) - p - 1))
+                        )
+                    )
+                self.write_value()
+                return None
+            elif key == "." and key in self.edit_text:
+                return None
+            elif key == "-" and p != 0:
+                return None
+        else:
+            
+            if self._command_map[key] == CURSOR_RIGHT:
+                return None
+            elif self._command_map[key] == CURSOR_LEFT:
+                return None
+            elif self._command_map[key] == CURSOR_UP:
+                if self.enum_strs_index == self.enum_strs_len - 1:
+                    return None
+                else:
+                    self.enum_strs_index = self.enum_strs_index + 1
+                    super().set_edit_text(self.pv.enum_strs[self.enum_strs_index])
+                return None
+            elif self._command_map[key] == CURSOR_DOWN:
+                if self.enum_strs_index == 0:
+                    return None
+                else:
+                    self.enum_strs_index = self.enum_strs_index - 1
+                    super().set_edit_text(self.pv.enum_strs[self.enum_strs_index])
+                return None
+            elif key == "p":
+                super().set_edit_text(self.pv.enum_strs[self.pv.value])
+                return None
+                '''define what happens if enum mode here'''
 
         unhandled = super().keypress((maxcol,), key)
 
@@ -193,17 +223,26 @@ class editPV(urwid.Edit):
         """
         write the value to the PV
         """
-        if (
-            self.edit_text == ""
-            or self.edit_text == "-"
-            or self.edit_text == "."
-            or self.edit_text == "-."
-        ):
-            super().set_edit_text(
-                "{:.{}f}".format(self.pv.get(), self.display_precision)
-            )
-        else:
-            self.pv.put(float(self.edit_text))
+        if self.enum:
+            if self.edit_text in self.enum_strs:
+                self.pv.put(self.enum_strs_index)
+            else:
+                self.enum_strs_index = self.pv.value
+                super().set_edit_text(
+                u"{}".format(self.enum_strs[self.enum_strs_index])
+                )
+        else:    
+            if (
+                self.edit_text == ""
+                or self.edit_text == "-"
+                or self.edit_text == "."
+                or self.edit_text == "-."
+            ):
+                super().set_edit_text(
+                    "{:.{}f}".format(self.pv.get(), self.display_precision)
+                )
+            else:
+                self.pv.put(float(self.edit_text))
 
     def value(self):
         """
@@ -218,6 +257,103 @@ class editPV(urwid.Edit):
             return float(self.edit_text)
         else:
             return 0
+
+
+class setPV(urwid.AttrMap):
+    """container widget to pass color when editing values"""
+    count = 0
+
+    def __init__(self, pv_name, enum=False, display_precision=-1, align_text="left"):
+        """
+
+        """
+        self.pv_name = pv_name
+        self.count += 1
+        self.display_precision = display_precision
+        self.enum = enum
+        self.editing = False
+        self.__super.__init__(
+            editPV(
+                self.pv_name,
+                enum=enum,
+                align_t=align_text,
+                display_precision=self.display_precision,
+            ),
+            "disconnected",
+            focus_map="disconnected",
+        )
+        self.original_widget.pv.connection_callbacks.append(self.on_connection_change)
+        self.original_widget.pv.add_callback(callback=self.change_value)
+
+
+    def keypress(self, size, key):
+        """
+        Handle enter key to start editing the contents of the field, pass everything else to the parent
+        """
+        (maxcol,) = size
+
+        if self.original_widget.conn:
+            if key == "enter":
+                if self.editing:
+                    self.editing = False
+                    point_pos = self.original_widget.edit_text.find(".")
+                    if (
+                        point_pos >= 0
+                        and self.original_widget.edit_text != "."
+                        and self.original_widget.edit_text != "-."
+                    ):
+                        self.original_widget.set_edit_text(
+                            "{:.{}f}".format(
+                                float(self.original_widget.edit_text),
+                                self.original_widget.display_precision,
+                            )
+                        )
+                    super().set_focus_map({None: "setPV_focus"})
+                    self.original_widget.write_value()
+                else:
+                    self.editing = True
+                    super().set_focus_map({None: "setPV_edit"})
+                    self.original_widget.set_edit_pos(0)
+                return None
+        else:
+            self.editing = False
+
+        if self.editing:
+            unhandled = self.original_widget.keypress((maxcol,), key)
+        else:
+            unhandled = key
+
+        return unhandled
+
+    def on_connection_change(self, conn, **kw):
+        self.original_widget.conn = conn
+        if conn:
+            super().set_attr_map({None: "setPV"})
+            super().set_focus_map({None: "setPV_focus"})
+
+        else:
+            self.editing = False
+            super().set_attr_map({None: "disconnected"})
+            super().set_focus_map({None: "disconnected"})
+            self.original_widget.set_edit_text("Disconnected")
+
+    def change_value(self, **kw):
+        if not self.enum:
+            self.original_widget.set_edit_text(
+            u"{:.{}f}".format(self.original_widget.pv.value, self.display_precision)
+            )
+        else:
+            # self.original_widget.set_edit_text(self.original_widget.pv.enum_strs[self.original_widget.pv.value])
+            # map(lambda x : x*2, [1, 2, 3, 4])
+            self.original_widget.enum_strs = list(map(lambda x : x.decode('utf-8'), self.original_widget.pv.enum_strs))
+            self.original_widget.enum_strs_len = len(self.original_widget.enum_strs)
+            self.original_widget.enum_strs_index = int(self.original_widget.pv.value)
+            if self.original_widget.enum_strs:
+                self.original_widget.set_edit_text(
+                u"{}".format(self.original_widget.enum_strs[self.original_widget.enum_strs_index])
+                )
+            else:
+                self.original_widget.set_edit_text('No enum')
 
 
 class getPV(urwid.AttrMap):
@@ -243,7 +379,7 @@ class getPV(urwid.AttrMap):
             form="ctrl",
             auto_monitor=True,
             connection_callback=self.on_connection_change,
-            connection_timeout=0.00001,
+            connection_timeout=0.0001,
         )
         if display_precision < 0:
             self.display_precision = self.pv.precision
@@ -299,87 +435,6 @@ class getPV(urwid.AttrMap):
             return key
 
 
-class setPV(urwid.AttrMap):
-    """container widget to pass color when editing values"""
-    count = 0
-
-    def __init__(self, pv_name, enum=False, display_precision=-1, align_text="left"):
-        """
-
-        """
-        self.pv_name = pv_name
-        self.count += 1
-        self.display_precision = display_precision
-        self.editing = False
-        self.__super.__init__(
-            editPV(
-                self.pv_name,
-                enum=enum,
-                align_t=align_text,
-                display_precision=self.display_precision,
-            ),
-            "disconnected",
-            focus_map="disconnected",
-        )
-        self.original_widget.pv.connection_callbacks.append(self.on_connection_change)
-        self.original_widget.pv.add_callback(callback=self.change_value)
-
-    def keypress(self, size, key):
-        """
-        Handle enter key to start editing the contents of the field, pass everything else to the parent
-        """
-        (maxcol,) = size
-
-        if self.original_widget.conn:
-            if key == "enter":
-                if self.editing:
-                    self.editing = False
-                    point_pos = self.original_widget.edit_text.find(".")
-                    if (
-                        point_pos >= 0
-                        and self.original_widget.edit_text != "."
-                        and self.original_widget.edit_text != "-."
-                    ):
-                        self.original_widget.set_edit_text(
-                            "{:.{}f}".format(
-                                float(self.original_widget.edit_text),
-                                self.original_widget.display_precision,
-                            )
-                        )
-                    super().set_focus_map({None: "setPV_focus"})
-                    self.original_widget.write_value()
-                else:
-                    self.editing = True
-                    super().set_focus_map({None: "setPV_edit"})
-                    self.original_widget.set_edit_pos(0)
-                return None
-        else:
-            self.editing = False
-
-        if self.editing:
-            unhandled = self.original_widget.keypress((maxcol,), key)
-        else:
-            unhandled = key
-
-        return unhandled
-
-    def on_connection_change(self, conn, **kw):
-        self.original_widget.conn = conn
-        if conn:
-            super().set_attr_map({None: "setPV"})
-            super().set_focus_map({None: "setPV_focus"})
-        else:
-            self.editing = False
-            super().set_attr_map({None: "disconnected"})
-            super().set_focus_map({None: "disconnected"})
-            self.original_widget.set_edit_text("Disconnected")
-
-    def change_value(self, **kw):
-        self.original_widget.set_edit_text(
-            u"{:.{}f}".format(self.original_widget.pv.value, self.display_precision)
-        )
-
-
 class LED(urwid.AttrMap):
     """ LED notification widget """
 
@@ -410,7 +465,7 @@ class LED(urwid.AttrMap):
             form="ctrl",
             auto_monitor=True,
             connection_callback=self.on_connection_change,
-            connection_timeout=0.00001,
+            connection_timeout=0.0001,
         )
         if self.enum:
             self.pv.add_callback(callback=self.change_value_enum)
@@ -492,7 +547,7 @@ class button(urwid.AttrMap):
         self.count += 1
         if pv_name is not None:
             self.pv = epics.pv.PV(
-                self.pv_name, auto_monitor=True, connection_timeout=0.00001
+                self.pv_name, auto_monitor=True, connection_timeout=0.0001
             )
         self.__super.__init__(urwid.Button(text), "None", focus_map="button")
         self.original_widget._label.align = align_text
