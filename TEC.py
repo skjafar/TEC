@@ -19,7 +19,8 @@ screen = None
 parser = argparse.ArgumentParser()
 parser.add_argument("-cf", "--config", help="YAML file with page configuration")
 parser.add_argument("-hf", "--header", help="YAML file with header configuration, usually for sonsitant headers")
-parser.add_argument("-m", "--macro", help='replace every "%M" with this given value')
+parser.add_argument("-t", "--time", type=float, default=0.5, help="refresh time period")
+parser.add_argument("-m", "--macro", nargs='+', help='replace every "%M[x]" with this given value, list values in order, first value replaces %M1, second %M2, etc.')
 parser.add_argument(
     "-v", "--verbose", help="increase output verbosity", action="store_true"
 )
@@ -68,13 +69,17 @@ class editPV(urwid.Edit):
         """
         return len(ch) == 1 and ch in "0123456789.-"
 
-    def __init__(self, pv_name, enum=False, align_t="left", display_precision=-1):
+    def __init__(self, pv_name, enum=False, unit=None, align_t="left", display_precision=-1):
         """
         Initializing editPV widget in 'disconnected' mode
         """
         self.pv_name = pv_name
         self.count += 1
         self.enum = enum
+        if unit is None:
+            self.unit = ''
+        else:
+            self.unit = unit
         self.enum_strs_len = 0
         self.enum_strs = []
         self.enum_strs_index = 0
@@ -123,22 +128,23 @@ class editPV(urwid.Edit):
                 if point_pos >= 0:
                     if point_pos < p:
                         super().set_edit_text(
-                            "{:.{}f}".format(
-                                float(self.edit_text) + (10 ** (-1 * (p - point_pos))),
-                                self.display_precision,
+                            "{:.{}f}{}".format(
+                                float(self.edit_text.replace(self.unit, '')) + (10 ** (-1 * (p - point_pos))),
+                                self.display_precision, self.unit,
                             )
                         )
                     else:
                         super().set_edit_text(
-                            "{:.{}f}".format(
-                                float(self.edit_text) + (10 ** (-1 * (p + 1 - point_pos))),
-                                self.display_precision,
+                            "{:.{}f}{}".format(
+                                float(self.edit_text.replace(self.unit, '')) + (10 ** (-1 * (p + 1 - point_pos))),
+                                self.display_precision, self.unit,
                             )
                         )
                 else:
                     super().set_edit_text(
-                        "{}".format(
-                            int(self.edit_text) + (10 ** (len(self.edit_text) - p - 1))
+                        "{}{}".format(
+                            int(self.edit_text.replace(self.unit, '')) + (10 ** (len(self.edit_text) - p - 1)),
+                            self.unit,
                         )
                     )
                 self.write_value()
@@ -155,33 +161,34 @@ class editPV(urwid.Edit):
                 if point_pos >= 0:
                     if point_pos < p:
                         super().set_edit_text(
-                            "{:.{}f}".format(
-                                float(self.edit_text) - (10 ** (-1 * (p - point_pos))),
-                                self.display_precision,
+                            "{:.{}f}{}".format(
+                                float(self.edit_text.replace(self.unit, '')) - (10 ** (-1 * (p - point_pos))),
+                                self.display_precision, self.unit,
                             )
                         )
                     else:
                         if self.edit_text[p] == 1:
                             next_non_zero_index = self.edit_text.match("[1-9]", p + 1)
                             super().set_edit_text(
-                                "{:.{}f}".format(
-                                    float(self.edit_text)
+                                "{:.{}f}{}".format(
+                                    float(self.edit_text.replace(self.unit, ''))
                                     - (10 ** (-1 * (next_non_zero_index - point_pos))),
-                                    self.display_precision,
+                                    self.display_precision, self.unit,
                                 )
                             )
                         else:
                             super().set_edit_text(
-                                "{:.{}f}".format(
-                                    float(self.edit_text)
+                                "{:.{}f}{}".format(
+                                    float(self.edit_text.replace(self.unit, ''))
                                     - (10 ** (-1 * (p + 1 - point_pos))),
-                                    self.display_precision,
+                                    self.display_precision, self.unit
                                 )
                             )
                 else:
                     super().set_edit_text(
-                        "{}".format(
-                            int(self.edit_text) - (10 ** (len(self.edit_text) - p - 1))
+                        "{}{}".format(
+                            int(self.edit_text.replace(self.unit, '')) - (10 ** (len(self.edit_text) - p - 1)),
+                            self.unit,
                         )
                     )
                 self.write_value()
@@ -191,7 +198,7 @@ class editPV(urwid.Edit):
             elif key == "-" and p != 0:
                 return None
         else:
-            
+            '''define what happens if enum mode here'''            
             if self._command_map[key] == CURSOR_RIGHT:
                 return None
             elif self._command_map[key] == CURSOR_LEFT:
@@ -213,7 +220,7 @@ class editPV(urwid.Edit):
             elif key == "p":
                 super().set_edit_text(self.pv.enum_strs[self.pv.value])
                 return None
-                '''define what happens if enum mode here'''
+
 
         unhandled = super().keypress((maxcol,), key)
 
@@ -239,10 +246,10 @@ class editPV(urwid.Edit):
                 or self.edit_text == "-."
             ):
                 super().set_edit_text(
-                    "{:.{}f}".format(self.pv.get(), self.display_precision)
+                    "{:.{}f}{}".format(self.pv.get(), self.display_precision, self.unit)
                 )
             else:
-                self.pv.put(float(self.edit_text))
+                self.pv.put(float(self.edit_text.replace(self.unit, '')))
 
     def value(self):
         """
@@ -254,7 +261,10 @@ class editPV(urwid.Edit):
         True
         """
         if self.edit_text:
-            return float(self.edit_text)
+            if self.enum:
+                return self.edit_text
+            else:
+                return float(self.edit_text.replace(self.unit, ''))
         else:
             return 0
 
@@ -263,7 +273,7 @@ class setPV(urwid.AttrMap):
     """container widget to pass color when editing values"""
     count = 0
 
-    def __init__(self, pv_name, enum=False, display_precision=-1, align_text="left"):
+    def __init__(self, pv_name, enum=False, unit=None, display_precision=-1, align_text="left"):
         """
 
         """
@@ -271,11 +281,16 @@ class setPV(urwid.AttrMap):
         self.count += 1
         self.display_precision = display_precision
         self.enum = enum
+        if unit is not None:
+            self.unit = unit
+        else:
+            self.unit = ""
         self.editing = False
         self.__super.__init__(
             editPV(
                 self.pv_name,
                 enum=enum,
+                unit=unit,
                 align_t=align_text,
                 display_precision=self.display_precision,
             ),
@@ -303,9 +318,9 @@ class setPV(urwid.AttrMap):
                         and self.original_widget.edit_text != "-."
                     ):
                         self.original_widget.set_edit_text(
-                            "{:.{}f}".format(
-                                float(self.original_widget.edit_text),
-                                self.original_widget.display_precision,
+                            "{:.{}f}{}".format(
+                                float(self.original_widget.edit_text.replace(self.unit, '')),
+                                self.original_widget.display_precision, self.unit,
                             )
                         )
                     super().set_focus_map({None: "setPV_focus"})
@@ -340,7 +355,7 @@ class setPV(urwid.AttrMap):
     def change_value(self, **kw):
         if not self.enum:
             self.original_widget.set_edit_text(
-            u"{:.{}f}".format(self.original_widget.pv.value, self.display_precision)
+            u"{:.{}f}{}".format(self.original_widget.pv.value, self.display_precision, self.unit)
             )
         else:
             # self.original_widget.set_edit_text(self.original_widget.pv.enum_strs[self.original_widget.pv.value])
@@ -575,13 +590,14 @@ def parseConfig(file, macro=None, verbose=False, header=None):
     readFile = inputFile.read()
     inputFile.close()
     if macro:
-        if "%M" in readFile:
-            readFile = readFile.replace("%M", macro)
+        for macroIndex, marcoValue in enumerate(macro):
+            if "%M{}".format(macroIndex + 1) in readFile:
+                readFile = readFile.replace("%M{}".format(macroIndex + 1), marcoValue)
 
-        else:
-            input(
-                "The YAML file {} does not contain any Macro designator [%M]. Press any key to evaluate the file normally".format(file)
-            )
+            else:
+                input(
+                    "The YAML file {} does not contain any Macro designator [%M{}]. Press any key to evaluate the file normally".format(file, macroIndex + 1)
+                )
 
     pageConfig = yaml.load(readFile)
     inputFile.close()
@@ -677,10 +693,11 @@ class terminal_client:
         ("key", "Q: Exit"),
     ]
 
-    update_rate = 0.5
+    #update_rate = 0.5
 
-    def __init__(self, configFileName, headerConfigFileName=None, macro=None, verbose=False):
+    def __init__(self, configFileName, update_rate=0.5, headerConfigFileName=None, macro=None, verbose=False):
 
+        self.update_rate = update_rate
         if verbose:
                 print("Parsing config file: {}".format(configFileName))
         self.walker = parseConfig(configFileName, macro=macro, verbose=verbose)
@@ -729,7 +746,7 @@ if __name__ == "__main__":
         if os.path.isfile(yaml_path + args.config):
             screen = terminal_client(yaml_path + args.config, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
         else:
-            screen = terminal_client(args.config, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
+            screen = terminal_client(args.config, update_rate=args.time, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
         screen.main()
     else:
         print("Please define a YAML configuration file using -c")
