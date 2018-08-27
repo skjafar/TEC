@@ -463,6 +463,7 @@ class LED(urwid.AttrMap):
         yellow_values=[],
         enum=False,
         exclude_selection=False,
+        script=None,
     ):
         """
 
@@ -473,6 +474,7 @@ class LED(urwid.AttrMap):
         self.yellow_values = yellow_values
         self.count += 1
         self.enum = enum
+        self.script = script
         self.exclude_selection=exclude_selection
         self.__super.__init__(urwid.Divider(), "disconnected")
         self.pv = epics.pv.PV(
@@ -482,11 +484,39 @@ class LED(urwid.AttrMap):
             connection_callback=self.on_connection_change,
             connection_timeout=0.0001,
         )
-        if self.enum:
+        if self.script:
+            self.pv.add_callback(callback=self.change_value_script)
+        elif self.enum:
             self.pv.add_callback(callback=self.change_value_enum)
         else:
             self.pv.add_callback(callback=self.change_value)
 
+    def change_value_script(self, value, **kw):
+        output = subprocess.run("{} {}".format(self.script, value), shell=True, stdout=subprocess.PIPE)
+        output = output.stdout.decode("utf-8")
+        if output.count("\n") > 1:
+            super().set_attr_map({None: "head"})  #invalid string
+        else:
+            output = output.replace("\n", "")
+            if self.exclude_selection:
+                if ((output not in self.red_values) and (self.red_values)):
+                    super().set_attr_map({None: "red_LED_on"})
+                elif ((output not in self.yellow_values) and (self.yellow_values)):
+                    super().set_attr_map({None: "yellow_LED_on"})
+                elif ((output not in self.green_values) and (self.green_values)):
+                    super().set_attr_map({None: "green_LED_on"})
+                else:
+                    super().set_attr_map({None: "LED_off"})
+            else:
+                if output in self.red_values:
+                    super().set_attr_map({None: "red_LED_on"})
+                elif output in self.yellow_values:
+                    super().set_attr_map({None: "yellow_LED_on"})
+                elif output in self.green_values:
+                    super().set_attr_map({None: "green_LED_on"})
+                else:
+                    super().set_attr_map({None: "LED_off"})
+    
     def change_value_enum(self, char_value, **kw):
         if self.exclude_selection:
             if char_value:
