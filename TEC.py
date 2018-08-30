@@ -9,6 +9,7 @@ import sys
 import fileinput
 from threading import Thread
 from time import sleep
+from itertools import count
 import urwid
 from urwid import CURSOR_LEFT, CURSOR_RIGHT, CURSOR_UP, CURSOR_DOWN, REDRAW_SCREEN
 import yaml
@@ -18,9 +19,18 @@ screen = None
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-cf", "--config", help="YAML file with page configuration")
-parser.add_argument("-hf", "--header", help="YAML file with header configuration, usually for sonsitant headers")
+parser.add_argument(
+    "-hf",
+    "--header",
+    help="YAML file with header configuration, usually for sonsitant headers",
+)
 parser.add_argument("-t", "--time", type=float, default=0.5, help="refresh time period")
-parser.add_argument("-m", "--macro", nargs='+', help='replace every "%M[x]" with this given value, list values in order, first value replaces %M1, second %M2, etc.')
+parser.add_argument(
+    "-m",
+    "--macro",
+    nargs="+",
+    help='replace every "%M[x]" with this given value, list values in order, first value replaces %M1, second %M2, etc.',
+)
 parser.add_argument(
     "-v", "--verbose", help="increase output verbosity", action="store_true"
 )
@@ -69,31 +79,35 @@ class editPV(urwid.Edit):
         """
         return len(ch) == 1 and ch in "0123456789.-"
 
-    def __init__(self, pv_name, enum=False, unit=None, align_t="left", display_precision=-1):
+    def __init__(
+        self, pv_name, enum=False, unit=None, align_t="left", display_precision=-1
+    ):
         """
         Initializing editPV widget in 'disconnected' mode
         """
         self.pv_name = pv_name
-        self.count += 1
+        editPV.count += 1
         self.enum = enum
         if unit is None:
-            self.unit = ''
+            self.unit = ""
         else:
             self.unit = unit
         self.enum_strs_len = 0
         self.enum_strs = []
         self.enum_strs_index = 0
         self.pv = epics.pv.PV(
-            self.pv_name, auto_monitor=True, connection_timeout=0.0001, form=('ctrl' if self.enum else 'native')
+            self.pv_name,
+            auto_monitor=True,
+            connection_timeout=0.0001,
+            form=("ctrl" if self.enum else "native"),
         )
         self.conn = False
-                    
+
         if display_precision < 0:
             self.display_precision = self.pv.precision
         else:
             self.display_precision = display_precision
         self.__super.__init__(edit_text="Disconnected", wrap="clip", align=align_t)
-
 
     def keypress(self, size, key):
         """
@@ -129,21 +143,26 @@ class editPV(urwid.Edit):
                     if point_pos < p:
                         super().set_edit_text(
                             "{:.{}f}{}".format(
-                                float(self.edit_text.replace(self.unit, '')) + (10 ** (-1 * (p - point_pos))),
-                                self.display_precision, self.unit,
+                                float(self.edit_text.replace(self.unit, ""))
+                                + (10 ** (-1 * (p - point_pos))),
+                                self.display_precision,
+                                self.unit,
                             )
                         )
                     else:
                         super().set_edit_text(
                             "{:.{}f}{}".format(
-                                float(self.edit_text.replace(self.unit, '')) + (10 ** (-1 * (p + 1 - point_pos))),
-                                self.display_precision, self.unit,
+                                float(self.edit_text.replace(self.unit, ""))
+                                + (10 ** (-1 * (p + 1 - point_pos))),
+                                self.display_precision,
+                                self.unit,
                             )
                         )
                 else:
                     super().set_edit_text(
                         "{}{}".format(
-                            int(self.edit_text.replace(self.unit, '')) + (10 ** (len(self.edit_text) - p - 1)),
+                            int(self.edit_text.replace(self.unit, ""))
+                            + (10 ** (len(self.edit_text) - p - 1)),
                             self.unit,
                         )
                     )
@@ -162,8 +181,10 @@ class editPV(urwid.Edit):
                     if point_pos < p:
                         super().set_edit_text(
                             "{:.{}f}{}".format(
-                                float(self.edit_text.replace(self.unit, '')) - (10 ** (-1 * (p - point_pos))),
-                                self.display_precision, self.unit,
+                                float(self.edit_text.replace(self.unit, ""))
+                                - (10 ** (-1 * (p - point_pos))),
+                                self.display_precision,
+                                self.unit,
                             )
                         )
                     else:
@@ -171,23 +192,26 @@ class editPV(urwid.Edit):
                             next_non_zero_index = self.edit_text.match("[1-9]", p + 1)
                             super().set_edit_text(
                                 "{:.{}f}{}".format(
-                                    float(self.edit_text.replace(self.unit, ''))
+                                    float(self.edit_text.replace(self.unit, ""))
                                     - (10 ** (-1 * (next_non_zero_index - point_pos))),
-                                    self.display_precision, self.unit,
+                                    self.display_precision,
+                                    self.unit,
                                 )
                             )
                         else:
                             super().set_edit_text(
                                 "{:.{}f}{}".format(
-                                    float(self.edit_text.replace(self.unit, ''))
+                                    float(self.edit_text.replace(self.unit, ""))
                                     - (10 ** (-1 * (p + 1 - point_pos))),
-                                    self.display_precision, self.unit
+                                    self.display_precision,
+                                    self.unit,
                                 )
                             )
                 else:
                     super().set_edit_text(
                         "{}{}".format(
-                            int(self.edit_text.replace(self.unit, '')) - (10 ** (len(self.edit_text) - p - 1)),
+                            int(self.edit_text.replace(self.unit, ""))
+                            - (10 ** (len(self.edit_text) - p - 1)),
                             self.unit,
                         )
                     )
@@ -198,7 +222,7 @@ class editPV(urwid.Edit):
             elif key == "-" and p != 0:
                 return None
         else:
-            '''define what happens if enum mode here'''            
+            """define what happens if enum mode here"""
             if self._command_map[key] == CURSOR_RIGHT:
                 return None
             elif self._command_map[key] == CURSOR_LEFT:
@@ -221,7 +245,6 @@ class editPV(urwid.Edit):
                 super().set_edit_text(self.pv.enum_strs[self.pv.value])
                 return None
 
-
         unhandled = super().keypress((maxcol,), key)
 
         return unhandled
@@ -236,9 +259,9 @@ class editPV(urwid.Edit):
             else:
                 self.enum_strs_index = self.pv.value
                 super().set_edit_text(
-                u"{}".format(self.enum_strs[self.enum_strs_index])
+                    u"{}".format(self.enum_strs[self.enum_strs_index])
                 )
-        else:    
+        else:
             if (
                 self.edit_text == ""
                 or self.edit_text == "-"
@@ -249,7 +272,7 @@ class editPV(urwid.Edit):
                     "{:.{}f}{}".format(self.pv.get(), self.display_precision, self.unit)
                 )
             else:
-                self.pv.put(float(self.edit_text.replace(self.unit, '')))
+                self.pv.put(float(self.edit_text.replace(self.unit, "")))
 
     def value(self):
         """
@@ -264,7 +287,7 @@ class editPV(urwid.Edit):
             if self.enum:
                 return self.edit_text
             else:
-                return float(self.edit_text.replace(self.unit, ''))
+                return float(self.edit_text.replace(self.unit, ""))
         else:
             return 0
 
@@ -273,12 +296,14 @@ class setPV(urwid.AttrMap):
     """container widget to pass color when editing values"""
     count = 0
 
-    def __init__(self, pv_name, enum=False, unit=None, display_precision=-1, align_text="left"):
+    def __init__(
+        self, pv_name, enum=False, unit=None, display_precision=-1, align_text="left"
+    ):
         """
 
         """
         self.pv_name = pv_name
-        self.count += 1
+        setPV.count += 1
         self.display_precision = display_precision
         self.enum = enum
         if unit is not None:
@@ -300,6 +325,14 @@ class setPV(urwid.AttrMap):
         self.original_widget.pv.connection_callbacks.append(self.on_connection_change)
         self.original_widget.pv.add_callback(callback=self.change_value)
 
+        self.infoText = (
+            "Widget type: {}\n"
+            "PV Name:     {}\n"
+            "Enum:        {}\n"
+            "Precision    {}\n".format(
+                self.__class__.__name__, self.pv_name, self.enum, self.display_precision
+            )
+        )
 
     def keypress(self, size, key):
         """
@@ -319,8 +352,13 @@ class setPV(urwid.AttrMap):
                     ):
                         self.original_widget.set_edit_text(
                             "{:.{}f}{}".format(
-                                float(self.original_widget.edit_text.replace(self.unit, '')),
-                                self.original_widget.display_precision, self.unit,
+                                float(
+                                    self.original_widget.edit_text.replace(
+                                        self.unit, ""
+                                    )
+                                ),
+                                self.original_widget.display_precision,
+                                self.unit,
                             )
                         )
                     super().set_focus_map({None: "setPV_focus"})
@@ -355,20 +393,28 @@ class setPV(urwid.AttrMap):
     def change_value(self, **kw):
         if not self.enum:
             self.original_widget.set_edit_text(
-            u"{:.{}f}{}".format(self.original_widget.pv.value, self.display_precision, self.unit)
+                u"{:.{}f}{}".format(
+                    self.original_widget.pv.value, self.display_precision, self.unit
+                )
             )
         else:
             # self.original_widget.set_edit_text(self.original_widget.pv.enum_strs[self.original_widget.pv.value])
             # map(lambda x : x*2, [1, 2, 3, 4])
-            self.original_widget.enum_strs = list(map(lambda x : x.decode('utf-8'), self.original_widget.pv.enum_strs))
+            self.original_widget.enum_strs = list(
+                map(lambda x: x.decode("utf-8"), self.original_widget.pv.enum_strs)
+            )
             self.original_widget.enum_strs_len = len(self.original_widget.enum_strs)
             self.original_widget.enum_strs_index = int(self.original_widget.pv.value)
             if self.original_widget.enum_strs:
                 self.original_widget.set_edit_text(
-                u"{}".format(self.original_widget.enum_strs[self.original_widget.enum_strs_index])
+                    u"{}".format(
+                        self.original_widget.enum_strs[
+                            self.original_widget.enum_strs_index
+                        ]
+                    )
                 )
             else:
-                self.original_widget.set_edit_text('No enum')
+                self.original_widget.set_edit_text("No enum")
 
 
 class getPV(urwid.AttrMap):
@@ -376,10 +422,16 @@ class getPV(urwid.AttrMap):
     count = 0
 
     def __init__(
-        self, pv_name, enum=False, display_precision=-1, unit=None, align_text="left", script=None
+        self,
+        pv_name,
+        enum=False,
+        display_precision=-1,
+        unit=None,
+        align_text="left",
+        script=None,
     ):
         self.pv_name = pv_name
-        self.count += 1
+        getPV.count += 1
         if unit is not None:
             self.unit = unit
         else:
@@ -411,16 +463,36 @@ class getPV(urwid.AttrMap):
             self.original_widget._selectable = True
         self.pv.add_callback(callback=self.change_value)
 
+        self.infoText = (
+            "Widget type: {}\n"
+            "PV Name:     {}\n"
+            "Enum:        {}\n"
+            "Precision    {}\n"
+            "Script:      {}\n".format(
+                self.__class__.__name__,
+                self.pv_name,
+                self.enum,
+                self.display_precision,
+                self.script,
+            )
+        )
+
     def change_value(self, **kw):
         if self.script is None:
             if self.enum:
                 self.original_widget.set_text((self.pv.char_value))
             else:
                 self.original_widget.set_text(
-                    u"{:.{}f}{}".format(self.pv.value, self.display_precision, self.unit)
+                    u"{:.{}f}{}".format(
+                        self.pv.value, self.display_precision, self.unit
+                    )
                 )
         else:
-            output = subprocess.run("{} {}".format(self.script, self.pv.value), shell=True, stdout=subprocess.PIPE)
+            output = subprocess.run(
+                "{} {}".format(self.script, self.pv.value),
+                shell=True,
+                stdout=subprocess.PIPE,
+            )
             output = output.stdout.decode("utf-8")
             if output.count("\n") > 1:
                 self.original_widget.set_text("Invalid output from string")
@@ -472,10 +544,10 @@ class LED(urwid.AttrMap):
         self.red_values = red_values
         self.green_values = green_values
         self.yellow_values = yellow_values
-        self.count += 1
+        LED.count += 1
         self.enum = enum
         self.script = script
-        self.exclude_selection=exclude_selection
+        self.exclude_selection = exclude_selection
         self.__super.__init__(urwid.Divider(), "disconnected")
         self.pv = epics.pv.PV(
             self.pv_name,
@@ -492,18 +564,20 @@ class LED(urwid.AttrMap):
             self.pv.add_callback(callback=self.change_value)
 
     def change_value_script(self, value, **kw):
-        output = subprocess.run("{} {}".format(self.script, value), shell=True, stdout=subprocess.PIPE)
+        output = subprocess.run(
+            "{} {}".format(self.script, value), shell=True, stdout=subprocess.PIPE
+        )
         output = output.stdout.decode("utf-8")
         if output.count("\n") > 1:
-            super().set_attr_map({None: "head"})  #invalid string
+            super().set_attr_map({None: "head"})  # invalid string
         else:
             output = output.replace("\n", "")
             if self.exclude_selection:
-                if ((output not in self.red_values) and (self.red_values)):
+                if (output not in self.red_values) and (self.red_values):
                     super().set_attr_map({None: "red_LED_on"})
-                elif ((output not in self.yellow_values) and (self.yellow_values)):
+                elif (output not in self.yellow_values) and (self.yellow_values):
                     super().set_attr_map({None: "yellow_LED_on"})
-                elif ((output not in self.green_values) and (self.green_values)):
+                elif (output not in self.green_values) and (self.green_values):
                     super().set_attr_map({None: "green_LED_on"})
                 else:
                     super().set_attr_map({None: "LED_off"})
@@ -516,15 +590,21 @@ class LED(urwid.AttrMap):
                     super().set_attr_map({None: "green_LED_on"})
                 else:
                     super().set_attr_map({None: "LED_off"})
-    
+
     def change_value_enum(self, char_value, **kw):
         if self.exclude_selection:
             if char_value:
-                if ((char_value.decode("utf8") not in self.red_values) and (self.red_values)):
+                if (char_value.decode("utf8") not in self.red_values) and (
+                    self.red_values
+                ):
                     super().set_attr_map({None: "red_LED_on"})
-                elif ((char_value.decode("utf8") not in self.yellow_values) and (self.yellow_values)):
+                elif (char_value.decode("utf8") not in self.yellow_values) and (
+                    self.yellow_values
+                ):
                     super().set_attr_map({None: "yellow_LED_on"})
-                elif ((char_value.decode("utf8") not in self.green_values) and (self.green_values)):
+                elif (char_value.decode("utf8") not in self.green_values) and (
+                    self.green_values
+                ):
                     super().set_attr_map({None: "green_LED_on"})
                 else:
                     super().set_attr_map({None: "LED_off"})
@@ -541,11 +621,11 @@ class LED(urwid.AttrMap):
 
     def change_value(self, value, **kw):
         if self.exclude_selection:
-            if ((value not in self.red_values) and (self.red_values)):
+            if (value not in self.red_values) and (self.red_values):
                 super().set_attr_map({None: "red_LED_on"})
-            elif ((value not in self.yellow_values) and (self.yellow_values)):
+            elif (value not in self.yellow_values) and (self.yellow_values):
                 super().set_attr_map({None: "yellow_LED_on"})
-            elif ((value not in self.green_values) and (self.green_values)):
+            elif (value not in self.green_values) and (self.green_values):
                 super().set_attr_map({None: "green_LED_on"})
             else:
                 super().set_attr_map({None: "LED_off"})
@@ -589,7 +669,7 @@ class button(urwid.AttrMap):
         self.pv_name = pv_name
         self.click_value = click_value
         self.script = script
-        self.count += 1
+        button.count += 1
         if pv_name is not None:
             self.pv = epics.pv.PV(
                 self.pv_name, auto_monitor=True, connection_timeout=0.0001
@@ -597,6 +677,10 @@ class button(urwid.AttrMap):
         self.__super.__init__(urwid.Button(text), "None", focus_map="button")
         self.original_widget._label.align = align_text
         urwid.connect_signal(self.original_widget, "click", self.clicked)
+
+        self.infoText = "Widget type: {}\n" "Script:      {}\n".format(
+            self.__class__.__name__, self.script
+        )
 
     def clicked(self, *args):
         if self.script is None:
@@ -608,6 +692,47 @@ class button(urwid.AttrMap):
             else:
                 subprocess.call(self.script, shell=True)
             screen.loop.screen.clear()
+
+
+class WidgetInfoPopUp(urwid.WidgetWrap):
+    """A dialog that appears with nothing but a close button """
+    signals = ["close"]
+
+    def __init__(self, text, *args, **kwargs):
+        close_button = urwid.Button("Close")
+        urwid.connect_signal(close_button, "click", lambda button: self._emit("close"))
+        pile = urwid.Pile(
+            [urwid.Text("Widget Information: \n\n{}".format(text)), urwid.AttrWrap(close_button, "button")]
+        )
+        fill = urwid.Filler(pile)
+        self.__super.__init__(urwid.AttrWrap(fill, "popup"))
+
+
+class PopUpWrapper(urwid.PopUpLauncher):
+
+    def __init__(self, type, **kwargs):
+        self.__super.__init__(str2Class(type)(**kwargs))
+
+    def create_pop_up(self):
+        pop_up = WidgetInfoPopUp(self.original_widget.infoText)
+        urwid.connect_signal(pop_up, "close", lambda button: self.close_pop_up())
+        return pop_up
+
+    def get_pop_up_parameters(self):
+        return {"left": 0, "top": 1, "overlay_width": 40, "overlay_height": 10}
+
+    def keypress(self, size, key):
+        """
+        Handle key strokes
+        """
+        (maxcol,) = size
+        if key in ["i", "I"]:
+            self.open_pop_up()
+            unhandled = None
+        else:
+            unhandled = self.original_widget.keypress((maxcol,), key)
+
+        return unhandled
 
 
 def str2Class(str):
@@ -626,7 +751,9 @@ def parseConfig(file, macro=None, verbose=False, header=None):
 
             else:
                 input(
-                    "The YAML file {} does not contain any Macro designator [%M{}]. Press any key to evaluate the file normally".format(file, macroIndex + 1)
+                    "The YAML file {} does not contain any Macro designator [%M{}]. Press any key to evaluate the file normally".format(
+                        file, macroIndex + 1
+                    )
                 )
 
     pageConfig = yaml.load(readFile)
@@ -653,22 +780,15 @@ def parseConfig(file, macro=None, verbose=False, header=None):
                 field.pop("device_name")
             fieldType = field["type"]
             fieldWidth = field["width"]
-            if fieldType not in [
-                "text",
-                "LED",
-                "getPV",
-                "setPV",
-                "button",
-                "divider",
-            ]:
+            if fieldType not in ["text", "LED", "getPV", "setPV", "button", "divider"]:
                 raise FieldParseError(
                     field, "undefined widget type ({})".format(fieldType)
                 )
             field.pop("type")
             field.pop("width")
-            columns_list.append(("fixed", fieldWidth, str2Class(fieldType)(**field)))
+            columns_list.append(("fixed", fieldWidth, PopUpWrapper(fieldType, **field)))
         rows_list.append(urwid.Columns(columns_list))
-    
+
     if header:
         return urwid.Columns(columns_list)
     else:
@@ -679,6 +799,7 @@ class terminal_client:
     palette = [
         ("None", "light gray", "black"),
         ("body", "black", "light gray"),
+        ("popup", "black", "dark gray"),
         ("head", "yellow", "black"),
         ("foot", "light gray", "black"),
         ("title", "white", "black"),
@@ -723,18 +844,27 @@ class terminal_client:
         ("key", "Q: Exit"),
     ]
 
-    #update_rate = 0.5
+    # update_rate = 0.5
 
-    def __init__(self, configFileName, update_rate=0.5, headerConfigFileName=None, macro=None, verbose=False):
+    def __init__(
+        self,
+        configFileName,
+        update_rate=0.5,
+        headerConfigFileName=None,
+        macro=None,
+        verbose=False,
+    ):
 
         self.update_rate = update_rate
         if verbose:
-                print("Parsing config file: {}".format(configFileName))
+            print("Parsing config file: {}".format(configFileName))
         self.walker = parseConfig(configFileName, macro=macro, verbose=verbose)
         if headerConfigFileName:
             if verbose:
                 print("Parsing header file: {}".format(headerConfigFileName))
-            self.header = parseConfig(headerConfigFileName, verbose=verbose, header=True)
+            self.header = parseConfig(
+                headerConfigFileName, verbose=verbose, header=True
+            )
         else:
             self.header = urwid.Text(u"Terminal EPICS Client")
         self.footer = urwid.AttrMap(urwid.Text(self.footer_text), "foot")
@@ -754,6 +884,7 @@ class terminal_client:
             self.palette,
             unhandled_input=self.unhandled_input,
             event_loop=self.EventLoop,
+            pop_ups=True,
         )
         self.loop.run()
 
@@ -774,9 +905,20 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.config:
         if os.path.isfile(yaml_path + args.config):
-            screen = terminal_client(yaml_path + args.config, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
+            screen = terminal_client(
+                yaml_path + args.config,
+                headerConfigFileName=args.header,
+                macro=args.macro,
+                verbose=args.verbose,
+            )
         else:
-            screen = terminal_client(args.config, update_rate=args.time, headerConfigFileName=args.header, macro=args.macro, verbose=args.verbose)
+            screen = terminal_client(
+                args.config,
+                update_rate=args.time,
+                headerConfigFileName=args.header,
+                macro=args.macro,
+                verbose=args.verbose,
+            )
         screen.main()
     else:
         print("Please define a YAML configuration file using -c")
