@@ -297,7 +297,7 @@ class setPV(urwid.AttrMap):
     count = 0
 
     def __init__(
-        self, pv_name, enum=False, unit=None, display_precision=-1, align_text="left"
+        self, pv_name, enum=False, unit=None, display_precision=-1, scientific=False, align_text="left"
     ):
         """
 
@@ -306,6 +306,7 @@ class setPV(urwid.AttrMap):
         setPV.count += 1
         self.display_precision = display_precision
         self.enum = enum
+        self.scientific = scientific
         if unit is not None:
             self.unit = unit
         else:
@@ -426,6 +427,7 @@ class getPV(urwid.AttrMap):
         pv_name,
         enum=False,
         display_precision=-1,
+        scientific=False,
         unit=None,
         align_text="left",
         script=None,
@@ -440,6 +442,7 @@ class getPV(urwid.AttrMap):
         self.script = script
         if self.script is not None:
             self.enum = False
+        self.scientific = scientific
         self.conn = False
         self.pv = epics.pv.PV(
             self.pv_name,
@@ -482,11 +485,18 @@ class getPV(urwid.AttrMap):
             if self.enum:
                 self.original_widget.set_text((self.pv.char_value))
             else:
-                self.original_widget.set_text(
-                    u"{:.{}f}{}".format(
-                        self.pv.value, self.display_precision, self.unit
+                if self.scientific:
+                    self.original_widget.set_text(
+                        u"{:.{}e}{}".format(
+                            self.pv.value, self.display_precision, self.unit
+                        )
                     )
-                )
+                else:
+                    self.original_widget.set_text(
+                        u"{:.{}f}{}".format(
+                            self.pv.value, self.display_precision, self.unit
+                        )
+                    )
         else:
             output = subprocess.run(
                 "{} {}".format(self.script, self.pv.value),
