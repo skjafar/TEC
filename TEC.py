@@ -330,8 +330,15 @@ class setPV(urwid.AttrMap):
             "Widget type: {}\n"
             "PV Name:     {}\n"
             "Enum:        {}\n"
-            "Precision    {}\n".format(
-                self.__class__.__name__, self.pv_name, self.enum, self.display_precision
+            "Precision:   {}\n"
+            "Scientific:  {}\n"
+            "Unit:        {}\n".format(
+                self.__class__.__name__,
+                self.pv_name,
+                self.enum,
+                self.display_precision,
+                self.scientific,
+                self.unit,
             )
         )
 
@@ -470,13 +477,17 @@ class getPV(urwid.AttrMap):
             "Widget type: {}\n"
             "PV Name:     {}\n"
             "Enum:        {}\n"
-            "Precision    {}\n"
+            "Precision:   {}\n"
+            "Scientific:  {}\n"
+            "Unit:        {}\n"
             "Script:      {}\n".format(
                 self.__class__.__name__,
                 self.pv_name,
                 self.enum,
                 self.display_precision,
+                self.scientific,
                 self.script,
+                self.unit,
             )
         )
 
@@ -682,14 +693,22 @@ class button(urwid.AttrMap):
         button.count += 1
         if pv_name is not None:
             self.pv = epics.pv.PV(
-                self.pv_name, auto_monitor=True, connection_timeout=0.0001
+                self.pv_name, auto_monitor=True, connection_callback=self.on_connection_change, connection_timeout=0.0001
             )
         self.__super.__init__(urwid.Button(text), "None", focus_map="button")
         self.original_widget._label.align = align_text
         urwid.connect_signal(self.original_widget, "click", self.clicked)
 
-        self.infoText = "Widget type: {}\n" "Script:      {}\n".format(
-            self.__class__.__name__, self.script
+        self.infoText = (
+            "Widget type: {}\n"
+            "PV Name:     {}\n"
+            "Click Value: {}\n"
+            "Script:      {}\n".format(
+                self.__class__.__name__,
+                self.pv_name,
+                self.click_value,
+                self.script,
+            )
         )
 
     def clicked(self, *args):
@@ -703,6 +722,12 @@ class button(urwid.AttrMap):
                 subprocess.call(self.script, shell=True)
             screen.loop.screen.clear()
 
+    def on_connection_change(self, conn, **kw):
+        if conn:
+            super().set_attr_map({None: "None"})
+            super().set_focus_map({None: "button"})
+        else:
+            super().set_attr_map({None: "disconnected"})
 
 class WidgetInfoPopUp(urwid.WidgetWrap):
     """A dialog that appears with nothing but a close button """
@@ -755,10 +780,14 @@ def parseConfig(file, macro=None, verbose=False, header=None):
     readFile = inputFile.read()
     inputFile.close()
     if macro:
-        for macroIndex, marcoValue in enumerate(macro):
+        for macroIndex, macroValue in enumerate(macro):
             if "%M{}".format(macroIndex + 1) in readFile:
-                readFile = readFile.replace("%M{}".format(macroIndex + 1), marcoValue)
-
+                if macroValue == "%S":
+                    readFile = readFile.replace("%M{}KS".format(macroIndex + 1), '%S')
+                    readFile = readFile.replace("%M{}".format(macroIndex + 1), '')
+                else:
+                    readFile = readFile.replace("%M{}KS".format(macroIndex + 1), macroValue)
+                    readFile = readFile.replace("%M{}".format(macroIndex + 1), macroValue)
             else:
                 input(
                     "The YAML file {} does not contain any Macro designator [%M{}]. Press any key to evaluate the file normally".format(
