@@ -825,6 +825,10 @@ def parseConfig(file, macro=None, verbose=False, header=None):
                 )
             field.pop("type")
             field.pop("width")
+            if "enable" in field:
+                if not field["enable"]:
+                    continue
+                field.pop("enable")
             columns_list.append(("fixed", fieldWidth, PopUpWrapper(fieldType, **field)))
         rows_list.append(urwid.Columns(columns_list))
 
