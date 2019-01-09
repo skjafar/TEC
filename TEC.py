@@ -7,7 +7,7 @@ import shutil
 import os
 import sys
 import fileinput
-from threading import Thread
+from threading import Timer
 from time import sleep
 from itertools import count
 import urwid
@@ -22,7 +22,7 @@ parser.add_argument("-cf", "--config", help="YAML file with page configuration")
 parser.add_argument(
     "-hf",
     "--header",
-    help="YAML file with header configuration, usually for sonsitant headers",
+    help="YAML file with header configuration, usually for consistant headers",
 )
 parser.add_argument("-t", "--time", type=float, default=0.5, help="refresh time period")
 parser.add_argument(
@@ -550,40 +550,82 @@ class LED(urwid.AttrMap):
 
     def __init__(
         self,
-        pv_name,
+        pv_name=None,
         red_values=[],
         green_values=[],
         yellow_values=[],
         enum=False,
         exclude_selection=False,
         script=None,
+        script_timer=1,
     ):
         """
 
         """
+        LED.count += 1
         self.pv_name = pv_name
         self.red_values = red_values
         self.green_values = green_values
         self.yellow_values = yellow_values
-        LED.count += 1
         self.enum = enum
         self.script = script
+        self.script_timer = script_timer
         self.exclude_selection = exclude_selection
         self.__super.__init__(urwid.Divider(), "disconnected")
-        self.pv = epics.pv.PV(
-            self.pv_name,
-            form="ctrl",
-            auto_monitor=True,
-            connection_callback=self.on_connection_change,
-            connection_timeout=0.0001,
-        )
+        if pv_name is not None:
+            self.pv = epics.pv.PV(
+                self.pv_name,
+                form="ctrl",
+                auto_monitor=True,
+                connection_callback=self.on_connection_change,
+                connection_timeout=0.0001,
+            )
         if self.script:
-            self.pv.add_callback(callback=self.change_value_script)
+            if pv_name is not None:
+                self.pv.add_callback(callback=self.change_value_script)
+            else:
+                # first time call the callback funtion almost directly so the user does not see the delay
+                self.callback = Timer(0.5, self.script_callback)
+                # set thread as daemon so it closes when main thread is closed for any reason
+                self.callback.setDaemon(True)
+                self.callback.start()
         elif self.enum:
             self.pv.add_callback(callback=self.change_value_enum)
         else:
             self.pv.add_callback(callback=self.change_value)
 
+    def script_callback(self, **kw):
+        output = subprocess.run(
+            self.script, shell=True, stdout=subprocess.PIPE
+        )
+        output = output.stdout.decode("utf-8")
+        # print(output)
+        if output.count("\n") > 1:
+            super().set_attr_map({None: "head"})  # invalid string
+        else:
+            output = output.replace("\n", "")
+            if self.exclude_selection:
+                if (output not in self.red_values) and (self.red_values):
+                    super().set_attr_map({None: "red_LED_on"})
+                elif (output not in self.yellow_values) and (self.yellow_values):
+                    super().set_attr_map({None: "yellow_LED_on"})
+                elif (output not in self.green_values) and (self.green_values):
+                    super().set_attr_map({None: "green_LED_on"})
+                else:
+                    super().set_attr_map({None: "LED_off"})
+            else:
+                if output in self.red_values:
+                    super().set_attr_map({None: "red_LED_on"})
+                elif output in self.yellow_values:
+                    super().set_attr_map({None: "yellow_LED_on"})
+                elif output in self.green_values:
+                    super().set_attr_map({None: "green_LED_on"})
+                else:
+                    super().set_attr_map({None: "LED_off"})
+        self.callback = Timer(self.script_timer, self.script_callback)
+        self.callback.setDaemon(True)
+        self.callback.start()
+        
     def change_value_script(self, value, **kw):
         output = subprocess.run(
             "{} {}".format(self.script, value), shell=True, stdout=subprocess.PIPE
