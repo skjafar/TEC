@@ -166,6 +166,14 @@ class editPV(urwid.Edit):
                             self.unit,
                         )
                     )
+
+                point_pos_new = self.edit_text.find(".")
+                if point_pos != self.edit_text.find("."):
+                    if point_pos_new > point_pos:
+                        self.set_edit_pos(p+1)
+                    elif point_pos_new < point_pos:
+                        self.set_edit_pos(p-1)
+
                 self.write_value()
                 return None
             elif self._command_map[key] == CURSOR_DOWN:
@@ -215,6 +223,14 @@ class editPV(urwid.Edit):
                             self.unit,
                         )
                     )
+
+                point_pos_new = self.edit_text.find(".")
+                if point_pos != self.edit_text.find("."):
+                    if point_pos_new > point_pos:
+                        self.set_edit_pos(p+1)
+                    elif point_pos_new < point_pos:
+                        self.set_edit_pos(p-1)
+
                 self.write_value()
                 return None
             elif key == "." and key in self.edit_text:
@@ -625,7 +641,7 @@ class LED(urwid.AttrMap):
         self.callback = Timer(self.script_timer, self.script_callback)
         self.callback.setDaemon(True)
         self.callback.start()
-        
+
     def change_value_script(self, value, **kw):
         output = subprocess.run(
             "{} {}".format(self.script, value), shell=True, stdout=subprocess.PIPE
